@@ -1,3 +1,0 @@
-N:/STUDY/NotPython/C++/OOP/homeworks/hw1_var16/build/CMakeFiles/HW1_VAR16.dir
-N:/STUDY/NotPython/C++/OOP/homeworks/hw1_var16/build/CMakeFiles/edit_cache.dir
-N:/STUDY/NotPython/C++/OOP/homeworks/hw1_var16/build/CMakeFiles/rebuild_cache.dir
