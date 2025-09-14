@@ -1,12 +1,12 @@
 # ==========================
 # CMake / Build artifacts
 # ==========================
-**/CMakeFiles/           # Каталог с временными файлами CMake
-**/CMakeCache.txt        # Кеш CMake
-**/cmake_install.cmake   # Скрипт установки CMake
+*CMakeFiles/           # Каталог с временными файлами CMake
+*CMakeCache.txt        # Кеш CMake
+*cmake_install.cmake   # Скрипт установки CMake
 *Makefile              # Генерируемый Makefile
-**/build/                # Папка сборки (часто вручную создаваемая)
-**/.dir/                 # Временные директории сборки
+*build/                # Папка сборки (часто вручную создаваемая)
+*.dir/                 # Временные директории сборки
 *.o                    # Объектные файлы компилятора
 *.obj                  # Объектные файлы для Windows
 *.so                   # Общие библиотеки Linux
@@ -25,21 +25,21 @@
 # ==========================
 
 # Visual Studio
-**.vcxproj*                  # Проект VS
-**.sln                       # Решение VS
-**.vcuser*                   # Пользовательские настройки VS
-**.opensdf *.sdf             # Файлы базы данных IntelliSense
-**.ipch *.pch *.ncb          # Промежуточные файлы компиляции
-**.suo *.user *.userosscache # Настройки пользователя
+*.vcxproj*                  # Проект VS
+*.sln                       # Решение VS
+*.vcuser*                   # Пользовательские настройки VS
+*.opensdf *.sdf             # Файлы базы данных IntelliSense
+*.ipch *.pch *.ncb          # Промежуточные файлы компиляции
+*.suo *.user *.userosscache # Настройки пользователя
 
 # ==========================
 # Temporary / Backup / OS files
 # ==========================
-**.log                 # Логи
-**.tmp                 # Временные файлы
-**.swp                 # Vim swap-файлы
-**~                    # Резервные копии
-**.bak                 # Файлы backup
-**.old                 # Старые версии
-**.DS_Store            # macOS мета-файлы
-**Thumbs.db            # Windows мета-файлы
+*.log                 # Логи
+*.tmp                 # Временные файлы
+*.swp                 # Vim swap-файлы
+*~                    # Резервные копии
+*.bak                 # Файлы backup
+*.old                 # Старые версии
+*.DS_Store            # macOS мета-файлы
+*Thumbs.db            # Windows мета-файлы
