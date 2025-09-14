@@ -1,11 +1,11 @@
 # ==========================
 # CMake / Build artifacts
 # ==========================
-CMakeFiles/          # Каталог с временными файлами CMake
-CMakeCache.txt       # Кеш CMake
-cmake_install.cmake  # Скрипт установки CMake
-Makefile             # Генерируемый Makefile
-build/               # Папка сборки (часто вручную создаваемая)
+*CMakeFiles/          # Каталог с временными файлами CMake
+*CMakeCache.txt       # Кеш CMake
+*cmake_install.cmake  # Скрипт установки CMake
+*Makefile             # Генерируемый Makefile
+*build/               # Папка сборки (часто вручную создаваемая)
 *.dir/               # Временные директории сборки
 *.o                  # Объектные файлы компилятора
 *.obj                # Объектные файлы для Windows
@@ -25,7 +25,7 @@ build/               # Папка сборки (часто вручную соз
 # ==========================
 
 # CLion
-.idea/               # Настройки проекта CLion
+*.idea/               # Настройки проекта CLion
 *.iml                # Файлы модулей CLion
 
 # Visual Studio
@@ -35,23 +35,6 @@ build/               # Папка сборки (часто вручную соз
 *.opensdf *.sdf      # Файлы базы данных IntelliSense
 *.ipch *.pch *.ncb    # Промежуточные файлы компиляции
 *.suo *.user *.userosscache # Настройки пользователя
-
-# Qt Creator
-*.pro.user*          # Настройки проекта Qt Creator
-*.qmlproject.user*   # Настройки QML проектов
-*.qbs.user*          # Настройки QBS проектов
-
-# Eclipse CDT
-*.cproject           # Проект Eclipse CDT
-*.project            # Файл проекта Eclipse
-.settings/           # Настройки Eclipse
-
-# Xcode
-*.xcworkspace/       # Рабочее пространство Xcode
-*.xcuserdata/        # Настройки пользователя Xcode
-*.xcodeproj/project.xcworkspace/
-*.xcodeproj/xcuserdata/
-*.xcuserstate        # Состояние пользователя Xcode
 
 # ==========================
 # Temporary / Backup / OS files
@@ -64,15 +47,3 @@ build/               # Папка сборки (часто вручную соз
 *.old                # Старые версии
 .DS_Store            # macOS мета-файлы
 Thumbs.db            # Windows мета-файлы
-
-# ==========================
-# Generated documentation
-# ==========================
-/docs/html/          # Генерируемая документация
-*.doxygen            # Файлы Doxygen
-*.dot                # Графы Doxygen
-
-# ==========================
-# Other generated files
-# ==========================
-/dist/               # Папка для сборки дистрибутивов
