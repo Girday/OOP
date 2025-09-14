@@ -1,37 +1,78 @@
-build/*
-.vscode/*
-.cache
+# ==========================
+# CMake / Build artifacts
+# ==========================
+CMakeFiles/          # Каталог с временными файлами CMake
+CMakeCache.txt       # Кеш CMake
+cmake_install.cmake  # Скрипт установки CMake
+Makefile             # Генерируемый Makefile
+build/               # Папка сборки (часто вручную создаваемая)
+*.dir/               # Временные директории сборки
+*.o                  # Объектные файлы компилятора
+*.obj                # Объектные файлы для Windows
+*.so                 # Общие библиотеки Linux
+*.dylib              # Общие библиотеки macOS
+*.dll                # Библиотеки Windows
+*.exe                # Исполняемые файлы
+*.out                # Исполняемые файлы UNIX
+*.a                  # Статические библиотеки Linux/macOS
+*.lib                # Статические библиотеки Windows
+*.pdb                # Отладочные файлы Windows
+*.idb *.ipdb *.iobj  # Файлы индексирования Visual Studio
+*.ilk *.manifest *.exp # Разные артефакты линкера Windows
 
-.DS_Store
-# Prerequisites
-*.d
+# ==========================
+# IDE-specific files
+# ==========================
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# CLion
+.idea/               # Настройки проекта CLion
+*.iml                # Файлы модулей CLion
 
-# Precompiled Headers
-*.gch
-*.pch
+# Visual Studio
+*.vcxproj*           # Проект VS
+*.sln                # Решение VS
+*.vcuser*            # Пользовательские настройки VS
+*.opensdf *.sdf      # Файлы базы данных IntelliSense
+*.ipch *.pch *.ncb    # Промежуточные файлы компиляции
+*.suo *.user *.userosscache # Настройки пользователя
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# Qt Creator
+*.pro.user*          # Настройки проекта Qt Creator
+*.qmlproject.user*   # Настройки QML проектов
+*.qbs.user*          # Настройки QBS проектов
 
-# Fortran module files
-*.mod
-*.smod
+# Eclipse CDT
+*.cproject           # Проект Eclipse CDT
+*.project            # Файл проекта Eclipse
+.settings/           # Настройки Eclipse
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+# Xcode
+*.xcworkspace/       # Рабочее пространство Xcode
+*.xcuserdata/        # Настройки пользователя Xcode
+*.xcodeproj/project.xcworkspace/
+*.xcodeproj/xcuserdata/
+*.xcuserstate        # Состояние пользователя Xcode
 
-# Executables
-*.exe
-*.out
-*.app
+# ==========================
+# Temporary / Backup / OS files
+# ==========================
+*.log                # Логи
+*.tmp                # Временные файлы
+*.swp                # Vim swap-файлы
+*~                   # Резервные копии
+*.bak                # Файлы backup
+*.old                # Старые версии
+.DS_Store            # macOS мета-файлы
+Thumbs.db            # Windows мета-файлы
+
+# ==========================
+# Generated documentation
+# ==========================
+/docs/html/          # Генерируемая документация
+*.doxygen            # Файлы Doxygen
+*.dot                # Графы Doxygen
+
+# ==========================
+# Other generated files
+# ==========================
+/dist/               # Папка для сборки дистрибутивов
