@@ -29,6 +29,7 @@
 *.opensdf *.sdf             
 *.ipch *.pch *.ncb          
 *.suo *.user *.userosscache 
+*.vscode/
 
 
 # Temporary / Backup / OS files
