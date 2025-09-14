@@ -2,6 +2,8 @@
 using namespace std;
 
 int main() {
-    cout << "Hello, World!" << "\n";
-    cout << "DONE" << "\n";
+    // I have to find a NOD of two numbers
+    // Good luck, me!
+    // I'm going to sleep now
+    return 0;
 }
