@@ -1,45 +1,43 @@
-# ==========================
 # CMake / Build artifacts
-# ==========================
-*build/                # Папка сборки (часто вручную создаваемая)
-*CMakeFiles/           # Каталог с временными файлами CMake
-*CMakeCache.txt        # Кеш CMake
-*cmake_install.cmake   # Скрипт установки CMake
-*Makefile              # Генерируемый Makefile
-*.dir/                 # Временные директории сборки
-*.o                    # Объектные файлы компилятора
-*.obj                  # Объектные файлы для Windows
-*.so                   # Общие библиотеки Linux
-*.dylib                # Общие библиотеки macOS
-*.dll                  # Библиотеки Windows
-*.exe                  # Исполняемые файлы
-*.out                  # Исполняемые файлы UNIX
-*.a                    # Статические библиотеки Linux/macOS
-*.lib                  # Статические библиотеки Windows
-*.pdb                  # Отладочные файлы Windows
-*.idb *.ipdb *.iobj    # Файлы индексирования Visual Studio
-*.ilk *.manifest *.exp # Разные артефакты линкера Windows
 
-# ==========================
+*build/                
+*CMakeFiles/           
+*CMakeCache.txt        
+*cmake_install.cmake   
+*Makefile              
+*.dir/                 
+*.o                    
+*.obj                  
+*.so                   
+*.dylib                
+*.dll                  
+*.exe                  
+*.out                  
+*.a                    
+*.lib                  
+*.pdb                  
+*.idb *.ipdb *.iobj    
+*.ilk *.manifest *.exp 
+
+
 # IDE-specific files
-# ==========================
 
 # Visual Studio
-*.vcxproj*                  # Проект VS
-*.sln                       # Решение VS
-*.vcuser*                   # Пользовательские настройки VS
-*.opensdf *.sdf             # Файлы базы данных IntelliSense
-*.ipch *.pch *.ncb          # Промежуточные файлы компиляции
-*.suo *.user *.userosscache # Настройки пользователя
+*.vcxproj*                  
+*.sln                       
+*.vcuser*                   
+*.opensdf *.sdf             
+*.ipch *.pch *.ncb          
+*.suo *.user *.userosscache 
 
-# ==========================
+
 # Temporary / Backup / OS files
-# ==========================
-*.log                 # Логи
-*.tmp                 # Временные файлы
-*.swp                 # Vim swap-файлы
-*~                    # Резервные копии
-*.bak                 # Файлы backup
-*.old                 # Старые версии
-*.DS_Store            # macOS мета-файлы
-*Thumbs.db            # Windows мета-файлы
+
+*.log                 
+*.tmp                 
+*.swp                 
+*~                    
+*.bak                 
+*.old                 
+*.DS_Store            
+*Thumbs.db            
