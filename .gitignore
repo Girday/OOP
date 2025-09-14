@@ -1,23 +1,23 @@
 # ==========================
 # CMake / Build artifacts
 # ==========================
-*CMakeFiles/          # Каталог с временными файлами CMake
-*CMakeCache.txt       # Кеш CMake
-*cmake_install.cmake  # Скрипт установки CMake
-*Makefile             # Генерируемый Makefile
-*build/               # Папка сборки (часто вручную создаваемая)
-*.dir/               # Временные директории сборки
-*.o                  # Объектные файлы компилятора
-*.obj                # Объектные файлы для Windows
-*.so                 # Общие библиотеки Linux
-*.dylib              # Общие библиотеки macOS
-*.dll                # Библиотеки Windows
-*.exe                # Исполняемые файлы
-*.out                # Исполняемые файлы UNIX
-*.a                  # Статические библиотеки Linux/macOS
-*.lib                # Статические библиотеки Windows
-*.pdb                # Отладочные файлы Windows
-*.idb *.ipdb *.iobj  # Файлы индексирования Visual Studio
+*CMakeFiles/           # Каталог с временными файлами CMake
+*CMakeCache.txt        # Кеш CMake
+*cmake_install.cmake   # Скрипт установки CMake
+*Makefile              # Генерируемый Makefile
+*build/                # Папка сборки (часто вручную создаваемая)
+*.dir/                 # Временные директории сборки
+*.o                    # Объектные файлы компилятора
+*.obj                  # Объектные файлы для Windows
+*.so                   # Общие библиотеки Linux
+*.dylib                # Общие библиотеки macOS
+*.dll                  # Библиотеки Windows
+*.exe                  # Исполняемые файлы
+*.out                  # Исполняемые файлы UNIX
+*.a                    # Статические библиотеки Linux/macOS
+*.lib                  # Статические библиотеки Windows
+*.pdb                  # Отладочные файлы Windows
+*.idb *.ipdb *.iobj    # Файлы индексирования Visual Studio
 *.ilk *.manifest *.exp # Разные артефакты линкера Windows
 
 # ==========================
@@ -26,14 +26,14 @@
 
 # CLion
 *.idea/               # Настройки проекта CLion
-*.iml                # Файлы модулей CLion
+*.iml                 # Файлы модулей CLion
 
 # Visual Studio
-*.vcxproj*           # Проект VS
-*.sln                # Решение VS
-*.vcuser*            # Пользовательские настройки VS
-*.opensdf *.sdf      # Файлы базы данных IntelliSense
-*.ipch *.pch *.ncb    # Промежуточные файлы компиляции
+*.vcxproj*                  # Проект VS
+*.sln                       # Решение VS
+*.vcuser*                   # Пользовательские настройки VS
+*.opensdf *.sdf             # Файлы базы данных IntelliSense
+*.ipch *.pch *.ncb          # Промежуточные файлы компиляции
 *.suo *.user *.userosscache # Настройки пользователя
 
 # ==========================
