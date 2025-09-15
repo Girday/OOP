@@ -23,6 +23,8 @@
 # IDE-specific files
 
 # Visual Studio
+
+*.vscode
 *.vcxproj*                  
 *.sln                       
 *.vcuser*                   
