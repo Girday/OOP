@@ -1,5 +1,7 @@
 #include "../include/gcd.h"
 
+#define abs(a) (((a) < 0) ? -(a) : (a))
+
 /*  
     Алгоритм Евклида
     Идея: НОД(a, b) = НОД(b, a % b)
