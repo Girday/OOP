@@ -6,7 +6,7 @@ int main() {
 
     Five a("243");
     Five b("32");
-    Five c{4, 3, 2, 1}; // представляет число 1234 в пятиричной системе
+    Five c{4, 3, 2, 1};
 
     std::cout << "a = "; a.print(std::cout) << "\n";
     std::cout << "b = "; b.print(std::cout) << "\n";
@@ -22,6 +22,7 @@ int main() {
     std::cout << "a > b ? " << (a.greater(b) ? "YES" : "NO") << "\n";
     std::cout << "a < c ? " << (a.less(c) ? "YES" : "NO") << "\n";
     std::cout << "a == b ? " << (a.equals(b) ? "YES" : "NO") << "\n";
+    std::cout << "a == a ? " << (a.equals(a) ? "YES" : "NO") << "\n";
 
     return 0;
 }
