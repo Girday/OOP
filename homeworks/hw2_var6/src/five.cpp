@@ -2,12 +2,12 @@
 
 // === КОНСТРУКТОРЫ ===
 
-Five::Five() : size(0), digits(nullptr) {}
+Five::Five() : size(1), digits(new unsigned char[1]{0}) {}
 
 Five::Five(const std::string& base5Number) {
     for (char c : base5Number)
         if (c < '0' || c > '4')
-            throw std::invalid_argument("Invalid symbol in base-5 number");
+            throw std::invalid_argument("Digits are only from 0 to 4");
 
     size = base5Number.size();
     digits = new unsigned char[size];
@@ -31,7 +31,8 @@ Five::Five(const std::initializer_list<unsigned char>& list) {
 
 Five::Five(const Five& other) : size(other.size) {
     digits = new unsigned char[size];
-    for (size_t i = 0; i < size; ++i) digits[i] = other.digits[i];
+    for (size_t i = 0; i < size; ++i) 
+        digits[i] = other.digits[i];
 }
 
 Five::Five(Five&& other) noexcept : size(other.size), digits(other.digits) {
@@ -43,6 +44,7 @@ Five::Five(Five&& other) noexcept : size(other.size), digits(other.digits) {
 
 Five Five::add(const Five& other) const {
     size_t maxSize = std::max(size, other.size);
+
     unsigned char* result = new unsigned char[maxSize + 1];
     unsigned char carry = 0;
 
@@ -50,6 +52,7 @@ Five Five::add(const Five& other) const {
         unsigned char a = (i < size) ? digits[i] : 0;
         unsigned char b = (i < other.size) ? other.digits[i] : 0;
         unsigned char sum = a + b + carry;
+        
         result[i] = sum % 5;
         carry = sum / 5;
     }
@@ -60,7 +63,10 @@ Five Five::add(const Five& other) const {
     Five res;
     res.size = maxSize;
     res.digits = new unsigned char[maxSize];
-    for (size_t i = 0; i < maxSize; ++i) res.digits[i] = result[i];
+
+    for (size_t i = 0; i < maxSize; ++i) 
+        res.digits[i] = result[i];
+
     delete[] result;
 
     return res;
@@ -87,12 +93,16 @@ Five Five::subtract(const Five& other) const {
     }
 
     size_t newSize = size;
-    while (newSize > 1 && result[newSize - 1] == 0) newSize--;
+    while (newSize > 1 && result[newSize - 1] == 0) 
+        --newSize;
 
     Five res;
     res.size = newSize;
     res.digits = new unsigned char[newSize];
-    for (size_t i = 0; i < newSize; ++i) res.digits[i] = result[i];
+    
+    for (size_t i = 0; i < newSize; ++i) 
+        res.digits[i] = result[i];
+    
     delete[] result;
     
     return res;
@@ -115,7 +125,7 @@ bool Five::greater(const Five& other) const {
     if (size != other.size) 
         return size > other.size;
     
-    for (size_t i = size; i-- > 0; )
+    for (size_t i = size; i > 0; --i)
         if (digits[i] != other.digits[i])
             return digits[i] > other.digits[i];
     
@@ -126,7 +136,7 @@ bool Five::less(const Five& other) const {
     if (size != other.size) 
         return size < other.size;
     
-    for (size_t i = size; i-- > 0; )
+    for (size_t i = size; i > 0; --i)
         if (digits[i] != other.digits[i])
             return digits[i] < other.digits[i];
     
@@ -136,8 +146,8 @@ bool Five::less(const Five& other) const {
 // === ВЫВОД ===
 
 std::ostream& Five::print(std::ostream& os) const {
-    for (size_t i = size; i-- > 0; )
-        os << static_cast<int>(digits[i]);
+    for (size_t i = size; i > 0; --i)
+        os << static_cast<int>(digits[i - 1]);
     
     return os;
 }
