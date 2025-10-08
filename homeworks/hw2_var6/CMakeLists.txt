@@ -1,39 +1,40 @@
-# CMakeLists.txt
+# CMakeLists.txt для лабораторной работы 2
+# Демонстрирует современную организацию проекта с разделением на библиотеку и исполняемый файл
 
-cmake_minimum_required(VERSION 4.1.1 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.10)
 
-project(HW1_VAR16)
-set(CMAKE_CXX_STANDARD 17)
-
-
-add_library(gcd src/compile/gcd.cpp)
-target_include_directories(gcd PUBLIC src/include)
-
-
-add_executable(HW1_VAR16 src/compile/main.cpp)
-target_link_libraries(HW1_VAR16 gcd)
-
-
-# GoogleTest
-
-include(FetchContent)
-
-FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip
+# Настройка проекта
+project(HW2_VAR6 
+    VERSION 1.0.0
+    DESCRIPTION "Лабораторная работа 2: Класс DashArray с Правилом пяти"
+    LANGUAGES CXX
 )
 
-set(INSTALL_GTEST OFF CACHE BOOL "Disable installation of googletest" FORCE)
-FetchContent_MakeAvailable(googletest)
+# Настройка стандарта C++
+set(CMAKE_CXX_STANDARD 11)  # Изменено с 20 на 11 для совместимости
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-enable_testing()
+# Настройка директорий
+set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
+set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-add_executable(test_gcd src/test/basicTest.cpp)
-target_link_libraries(test_gcd gcd GTest::gtest_main)
+# Поиск исходных файлов библиотеки
+file(GLOB_RECURSE LIBRARY_SOURCES LIST_DIRECTORIES false ${SOURCE_DIR}/*.cpp)
 
-add_executable(random_test src/test/randomTest.cpp)
-target_link_libraries(random_test gcd GTest::gtest_main)
+# Создание библиотеки
+add_library(FIVE ${LIBRARY_SOURCES})
 
-include(GoogleTest)
-gtest_discover_tests(test_gcd)
-gtest_discover_tests(random_test)
+# Добавление директории с заголовочными файлами
+target_include_directories(FIVE PUBLIC ${INCLUDE_DIR})
+
+# Создание исполняемого файла
+add_executable(HW2_VAR6 main.cpp)
+
+# Связывание библиотеки с исполняемым файлом
+target_link_libraries(HW2_VAR6 PRIVATE FIVE)
+
+# Настройка компилятора (опционально)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(FIVE PRIVATE -Wall -Wextra -Wpedantic)
+    target_compile_options(HW2_VAR6 PRIVATE -Wall -Wextra -Wpedantic)
+endif()
