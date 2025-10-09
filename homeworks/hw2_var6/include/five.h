@@ -14,6 +14,10 @@ public:
     Five(const Five& other);        // копирующий
     Five(Five&& other) noexcept;    // перемещающий
 
+    // === ОПЕРАТОРЫ ПРИСВАИВАНИЯ ===
+    Five& operator=(const Five& other);        // копирующий
+    Five& operator=(Five&& other) noexcept;    // перемещающий
+
     // === ОПЕРАЦИИ ===
     Five add(const Five& other) const;
     Five subtract(const Five& other) const;

@@ -25,7 +25,7 @@ Five::Five(const std::initializer_list<unsigned char>& list) { // из спис�
         if (value > 4) 
             throw std::invalid_argument("Digits are only from 0 to 4");
         
-        digits[i++] = value;
+        digits[size - i++ - 1] = value;
     }
 }
 
@@ -38,6 +38,36 @@ Five::Five(const Five& other) : size(other.size) { // копирующий
 Five::Five(Five&& other) noexcept : size(other.size), digits(other.digits) { // перемещающий
     other.size = 0;
     other.digits = nullptr;
+}
+
+// === ОПЕРАТОРЫ ПРИСВАИВАНИЯ ===
+
+Five& Five::operator=(const Five& other) { // копирующий
+    if (this != &other) {
+        delete[] digits;
+        
+        size = other.size;
+        digits = new unsigned char[size];
+        
+        for (size_t i = 0; i < size; ++i)
+            digits[i] = other.digits[i];
+    }
+
+    return *this;
+}
+
+Five& Five::operator=(Five&& other) noexcept { // перемещающий
+    if (this != &other) {
+        delete[] digits;
+        
+        size = other.size;
+        digits = other.digits;
+        
+        other.size = 0;
+        other.digits = nullptr;
+    }
+
+    return *this;
 }
 
 // === АРИФМЕТИЧЕСКИЕ ОПЕРАЦИИ ===
