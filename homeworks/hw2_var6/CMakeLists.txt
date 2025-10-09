@@ -36,41 +36,36 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(HW2_VAR6 PRIVATE -Wall -Wextra -Wpedantic)
 endif()
 
+
 # ============== GOOGLE TEST ==============
 
-# Включение поддержки тестирования
-enable_testing()
-
-# Включение FetchContent для автоматической загрузки Google Test
 include(FetchContent)
 
-# Загрузка Google Test из GitHub
 FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip
 )
 
-# Отключаем установку gtest в систему
 set(INSTALL_GTEST OFF CACHE BOOL "Disable installation of googletest" FORCE)
-
-# Делаем Google Test доступным
 FetchContent_MakeAvailable(googletest)
 
-# Создание исполняемого файла для тестов
+enable_testing()
+
 add_executable(test_five gtests.cpp)
 
-# Связывание тестов с библиотекой и Google Test
 target_link_libraries(test_five 
     PRIVATE 
     FIVE 
     GTest::gtest_main
 )
 
-# Добавление тестов в CTest
+target_include_directories(test_five PRIVATE
+    ${gtest_SOURCE_DIR}/googletest/include
+)
+
 include(GoogleTest)
 gtest_discover_tests(test_five)
 
-# Настройка компилятора для тестов
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(test_five PRIVATE -Wall -Wextra -Wpedantic)
 endif()
