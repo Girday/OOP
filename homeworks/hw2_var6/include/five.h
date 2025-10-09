@@ -23,13 +23,13 @@ public:
 
     // === ВЫВОД ===
     std::ostream& print(std::ostream& os) const;
-
+    
     // === ДЕСТРУКТОР ===
     virtual ~Five() noexcept;
 
 private:
     size_t size;
-    unsigned char* digits;
+    unsigned char* digits{nullptr};
 
     void normalize(); 
 };
