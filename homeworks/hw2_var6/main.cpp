@@ -1,11 +1,10 @@
 #include <iostream>
 #include "five.h"
 
-// Lab 2: Class Five
-// Show constructors, copy, move, and basic math operations
+// DEMONSTRATION
 
 int main() {
-    std::cout << "\n=== Lab 2: Class Five ===\n";
+    std::cout << "\n=== HW2_VAR6: Class Five ===\n";
 
     // === 1. Constructors ===
     std::cout << "\n--- Constructors ---\n";
@@ -14,8 +13,8 @@ int main() {
     std::cout << "Default: ";
     def.print(std::cout) << "\n";
 
-    Five fromStr("243");
-    std::cout << "From string (\"243\"): ";
+    Five fromStr("00243");
+    std::cout << "From string (\"00243\"): ";
     fromStr.print(std::cout) << "\n";
 
     Five fromList{4, 3, 2, 1};
@@ -46,8 +45,8 @@ int main() {
     std::cout << "a + b = ";
     sum.print(std::cout) << "\n";
 
-    Five diff = a.subtract(Five("12"));
-    std::cout << "a - 12 = ";
+    Five diff = a.subtract(Five("40"));
+    std::cout << "a - 40 = ";
     diff.print(std::cout) << "\n";
 
     // === 3. Compare ===
@@ -65,7 +64,7 @@ int main() {
         std::cout << ", y = "; y.print(std::cout);
         std::cout << "\n";
 
-        Five bad = x.subtract(y); // should throw
+        Five bad = x.subtract(y);
         std::cout << "Result (no throw): ";
         bad.print(std::cout) << "\n";
     } catch (const std::exception& e) {
@@ -98,6 +97,6 @@ int main() {
     std::cout << "All destructors will be called now.\n";
 
     std::cout << "\n=== End ===\n\n";
-    
+
     return 0;
 }
