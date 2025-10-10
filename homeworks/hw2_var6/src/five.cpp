@@ -25,7 +25,7 @@ Five::Five(const std::initializer_list<unsigned char>& list) { // из спис�
         if (value > 4) 
             throw std::invalid_argument("Digits are only from 0 to 4");
         
-        digits[size - i++ - 1] = value;
+        digits[i++] = value;
     }
 }
 
