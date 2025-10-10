@@ -6,7 +6,7 @@
 int main() {
     std::cout << "\n=== HW2_VAR6: Class Five ===\n";
 
-    // === 1. Constructors ===
+    // === Конструкторы ===
     std::cout << "\n--- Constructors ---\n";
 
     Five def;
@@ -32,7 +32,7 @@ int main() {
     std::cout << "Old copy (after move): ";
     copy.print(std::cout) << "\n";
 
-    // === 2. Math operations ===
+    // === Операторы ===
     std::cout << "\n--- Math operations ---\n";
 
     Five a("132");
@@ -49,13 +49,13 @@ int main() {
     std::cout << "a - 40 = ";
     diff.print(std::cout) << "\n";
 
-    // === 3. Compare ===
+    // === Сравнение ===
     std::cout << "\n--- Compare ---\n";
     std::cout << "a == b ? " << (a.equals(b) ? "Yes" : "No") << "\n";
     std::cout << "a > b ? " << (a.greater(b) ? "Yes" : "No") << "\n";
     std::cout << "a < b ? " << (a.less(b) ? "Yes" : "No") << "\n";
 
-    // === 4. Exceptions ===
+    // === Исключения ===
     std::cout << "\n--- Exception test ---\n";
     try {
         Five x("10");
@@ -71,7 +71,7 @@ int main() {
         std::cerr << "Caught exception: " << e.what() << "\n";
     }
 
-    // === 5. Move and assign ===
+    // === Перемещение и присваивание ===
     std::cout << "\n--- Move and assign ---\n";
 
     Five c("444");
