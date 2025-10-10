@@ -14,6 +14,8 @@ Five::Five(const std::string& base5Number) { // из строки
 
     for (size_t i = 0; i < size; ++i)
         digits[i] = base5Number[size - i - 1] - '0';
+    
+    normalize();
 }
 
 Five::Five(const std::initializer_list<unsigned char>& list) { // из списка цифр
@@ -27,6 +29,8 @@ Five::Five(const std::initializer_list<unsigned char>& list) { // из спис�
         
         digits[i++] = value;
     }
+
+    normalize();
 }
 
 Five::Five(const Five& other) : size(other.size) { // копирующий
