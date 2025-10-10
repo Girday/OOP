@@ -334,10 +334,10 @@ TEST(FiveComplexTest, NormalizationAfterSubtraction) {
 
 // 36
 TEST(FiveEdgeCaseTest, LeadingZeros) {
-    Five a("0123");
+    Five a("001230");
     std::ostringstream oss;
     a.print(oss);
-    EXPECT_EQ(oss.str(), "0123");
+    EXPECT_EQ(oss.str(), "1230");
 }
 
 // 37
