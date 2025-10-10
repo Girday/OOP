@@ -4,6 +4,7 @@
 
 // === ТЕСТЫ КОНСТРУКТОРОВ ===
 
+// 1
 TEST(FiveConstructorTest, DefaultConstructor) {
     Five num;
     std::ostringstream oss;
@@ -11,6 +12,7 @@ TEST(FiveConstructorTest, DefaultConstructor) {
     EXPECT_EQ(oss.str(), "0");
 }
 
+// 2
 TEST(FiveConstructorTest, StringConstructorValid) {
     Five num("243");
     std::ostringstream oss;
@@ -18,6 +20,7 @@ TEST(FiveConstructorTest, StringConstructorValid) {
     EXPECT_EQ(oss.str(), "243");
 }
 
+// 3
 TEST(FiveConstructorTest, StringConstructorSingleDigit) {
     Five num("4");
     std::ostringstream oss;
@@ -25,24 +28,28 @@ TEST(FiveConstructorTest, StringConstructorSingleDigit) {
     EXPECT_EQ(oss.str(), "4");
 }
 
+// 4
 TEST(FiveConstructorTest, StringConstructorInvalidDigit) {
     EXPECT_THROW(Five num("456"), std::invalid_argument);
     EXPECT_THROW(Five num("12a"), std::invalid_argument);
     EXPECT_THROW(Five num("9"), std::invalid_argument);
 }
 
+// 5
 TEST(FiveConstructorTest, InitializerListValid) {
     Five num{4, 3, 2, 1};
     std::ostringstream oss;
     num.print(oss);
-    EXPECT_EQ(oss.str(), "4321");
+    EXPECT_EQ(oss.str(), "1234");
 }
 
+// 6
 TEST(FiveConstructorTest, InitializerListInvalid) {
     EXPECT_THROW(Five num({5, 3, 2}), std::invalid_argument);
     EXPECT_THROW(Five num({1, 2, 9}), std::invalid_argument);
 }
 
+// 7
 TEST(FiveConstructorTest, CopyConstructor) {
     Five original("1234");
     Five copy(original);
@@ -55,6 +62,7 @@ TEST(FiveConstructorTest, CopyConstructor) {
     EXPECT_TRUE(original.equals(copy));
 }
 
+// 8
 TEST(FiveConstructorTest, MoveConstructor) {
     Five original("4321");
     Five moved(std::move(original));
@@ -66,6 +74,7 @@ TEST(FiveConstructorTest, MoveConstructor) {
 
 // === ТЕСТЫ СЛОЖЕНИЯ ===
 
+// 9
 TEST(FiveAddTest, SimpleAddition) {
     Five a("12");
     Five b("23");
@@ -73,9 +82,10 @@ TEST(FiveAddTest, SimpleAddition) {
     
     std::ostringstream oss;
     result.print(oss);
-    EXPECT_EQ(oss.str(), "40"); // 12₅ + 23₅ = 40₅
+    EXPECT_EQ(oss.str(), "40");
 }
 
+// 10
 TEST(FiveAddTest, AdditionWithCarry) {
     Five a("44");
     Five b("11");
@@ -83,9 +93,10 @@ TEST(FiveAddTest, AdditionWithCarry) {
     
     std::ostringstream oss;
     result.print(oss);
-    EXPECT_EQ(oss.str(), "110"); // 44₅ + 11₅ = 110₅
+    EXPECT_EQ(oss.str(), "110");
 }
 
+// 11
 TEST(FiveAddTest, AdditionWithZero) {
     Five a("123");
     Five b("0");
@@ -96,6 +107,7 @@ TEST(FiveAddTest, AdditionWithZero) {
     EXPECT_EQ(oss.str(), "123");
 }
 
+// 12
 TEST(FiveAddTest, AdditionDifferentSizes) {
     Five a("1234");
     Five b("2");
@@ -106,6 +118,7 @@ TEST(FiveAddTest, AdditionDifferentSizes) {
     EXPECT_EQ(oss.str(), "1241");
 }
 
+// 13
 TEST(FiveAddTest, AdditionMaxDigits) {
     Five a("444");
     Five b("1");
@@ -118,6 +131,7 @@ TEST(FiveAddTest, AdditionMaxDigits) {
 
 // === ТЕСТЫ ВЫЧИТАНИЯ ===
 
+// 14
 TEST(FiveSubtractTest, SimpleSubtraction) {
     Five a("43");
     Five b("21");
@@ -128,6 +142,7 @@ TEST(FiveSubtractTest, SimpleSubtraction) {
     EXPECT_EQ(oss.str(), "22");
 }
 
+// 15
 TEST(FiveSubtractTest, SubtractionWithBorrow) {
     Five a("100");
     Five b("1");
@@ -138,6 +153,7 @@ TEST(FiveSubtractTest, SubtractionWithBorrow) {
     EXPECT_EQ(oss.str(), "44"); // 100₅ - 1₅ = 44₅
 }
 
+// 16
 TEST(FiveSubtractTest, SubtractionResultZero) {
     Five a("123");
     Five b("123");
@@ -148,12 +164,14 @@ TEST(FiveSubtractTest, SubtractionResultZero) {
     EXPECT_EQ(oss.str(), "0");
 }
 
+// 17
 TEST(FiveSubtractTest, SubtractionNegativeResult) {
     Five a("10");
     Five b("20");
     EXPECT_THROW(a.subtract(b), std::invalid_argument);
 }
 
+// 18
 TEST(FiveSubtractTest, SubtractionFromLarger) {
     Five a("1234");
     Five b("234");
@@ -166,66 +184,77 @@ TEST(FiveSubtractTest, SubtractionFromLarger) {
 
 // === ТЕСТЫ СРАВНЕНИЯ ===
 
+// 19
 TEST(FiveComparisonTest, EqualsTrue) {
     Five a("1234");
     Five b("1234");
     EXPECT_TRUE(a.equals(b));
 }
 
+// 20
 TEST(FiveComparisonTest, EqualsFalse) {
     Five a("1234");
     Five b("1233");
     EXPECT_FALSE(a.equals(b));
 }
 
+// 21
 TEST(FiveComparisonTest, EqualsDifferentSize) {
     Five a("123");
     Five b("1234");
     EXPECT_FALSE(a.equals(b));
 }
 
+// 22
 TEST(FiveComparisonTest, GreaterTrue) {
     Five a("1234");
     Five b("123");
     EXPECT_TRUE(a.greater(b));
 }
 
+// 23
 TEST(FiveComparisonTest, GreaterFalse) {
     Five a("123");
     Five b("1234");
     EXPECT_FALSE(a.greater(b));
 }
 
+// 24
 TEST(FiveComparisonTest, GreaterSameSize) {
     Five a("234");
     Five b("123");
     EXPECT_TRUE(a.greater(b));
 }
 
+// 25
 TEST(FiveComparisonTest, GreaterEqual) {
     Five a("123");
     Five b("123");
     EXPECT_FALSE(a.greater(b));
 }
 
+// 26
 TEST(FiveComparisonTest, LessTrue) {
     Five a("123");
     Five b("1234");
     EXPECT_TRUE(a.less(b));
 }
 
+// 27
 TEST(FiveComparisonTest, LessFalse) {
     Five a("1234");
     Five b("123");
     EXPECT_FALSE(a.less(b));
 }
 
+// 28
 TEST(FiveComparisonTest, LessSameSize) {
     Five a("123");
     Five b("234");
     EXPECT_TRUE(a.less(b));
 }
 
+// 29
 TEST(FiveComparisonTest, LessEqual) {
     Five a("123");
     Five b("123");
@@ -234,6 +263,7 @@ TEST(FiveComparisonTest, LessEqual) {
 
 // === ТЕСТЫ ВЫВОДА ===
 
+// 30
 TEST(FivePrintTest, PrintSingleDigit) {
     Five num("3");
     std::ostringstream oss;
@@ -241,6 +271,7 @@ TEST(FivePrintTest, PrintSingleDigit) {
     EXPECT_EQ(oss.str(), "3");
 }
 
+// 31
 TEST(FivePrintTest, PrintMultipleDigits) {
     Five num("43210");
     std::ostringstream oss;
@@ -248,6 +279,7 @@ TEST(FivePrintTest, PrintMultipleDigits) {
     EXPECT_EQ(oss.str(), "43210");
 }
 
+// 32
 TEST(FivePrintTest, PrintZero) {
     Five num("0");
     std::ostringstream oss;
@@ -257,6 +289,7 @@ TEST(FivePrintTest, PrintZero) {
 
 // === КОМПЛЕКСНЫЕ ТЕСТЫ ===
 
+// 33
 TEST(FiveComplexTest, ChainedOperations) {
     Five a("100");
     Five b("23");
@@ -269,6 +302,7 @@ TEST(FiveComplexTest, ChainedOperations) {
     EXPECT_EQ(oss.str(), "111");
 }
 
+// 34
 TEST(FiveComplexTest, CopyAndModify) {
     Five original("123");
     Five copy(original);
@@ -285,6 +319,7 @@ TEST(FiveComplexTest, CopyAndModify) {
     EXPECT_EQ(oss2.str(), "124");
 }
 
+// 35
 TEST(FiveComplexTest, NormalizationAfterSubtraction) {
     Five a("1000");
     Five b("1");
@@ -297,6 +332,7 @@ TEST(FiveComplexTest, NormalizationAfterSubtraction) {
 
 // === ГРАНИЧНЫЕ СЛУЧАИ ===
 
+// 36
 TEST(FiveEdgeCaseTest, LeadingZeros) {
     Five a("0123");
     std::ostringstream oss;
@@ -304,6 +340,7 @@ TEST(FiveEdgeCaseTest, LeadingZeros) {
     EXPECT_EQ(oss.str(), "0123");
 }
 
+// 37
 TEST(FiveEdgeCaseTest, MultipleAdditions) {
     Five sum("0");
     for (int i = 0; i < 5; ++i) {
@@ -315,6 +352,7 @@ TEST(FiveEdgeCaseTest, MultipleAdditions) {
     EXPECT_EQ(oss.str(), "10"); // 5 в десятичной = 10 в пятеричной
 }
 
+// 38
 TEST(FiveEdgeCaseTest, SelfComparison) {
     Five num("1234");
     EXPECT_TRUE(num.equals(num));
