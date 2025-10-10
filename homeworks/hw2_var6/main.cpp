@@ -1,28 +1,103 @@
 #include <iostream>
 #include "five.h"
 
-int main() {
-    std::cout << "=== Class Five ===\n";
+// Lab 2: Class Five
+// Show constructors, copy, move, and basic math operations
 
-    Five a("243");
-    Five b("32");
-    Five c{4, 3, 2, 1};
+int main() {
+    std::cout << "\n=== Lab 2: Class Five ===\n";
+
+    // === 1. Constructors ===
+    std::cout << "\n--- Constructors ---\n";
+
+    Five def;
+    std::cout << "Default: ";
+    def.print(std::cout) << "\n";
+
+    Five fromStr("243");
+    std::cout << "From string (\"243\"): ";
+    fromStr.print(std::cout) << "\n";
+
+    Five fromList{4, 3, 2, 1};
+    std::cout << "From list {4,3,2,1}: ";
+    fromList.print(std::cout) << "\n";
+
+    Five copy(fromStr);
+    std::cout << "Copy fromStr: ";
+    copy.print(std::cout) << "\n";
+
+    Five moved(std::move(copy));
+    std::cout << "Moved (copy -> moved): ";
+    moved.print(std::cout) << "\n";
+
+    std::cout << "Old copy (after move): ";
+    copy.print(std::cout) << "\n";
+
+    // === 2. Math operations ===
+    std::cout << "\n--- Math operations ---\n";
+
+    Five a("132");
+    Five b("43");
 
     std::cout << "a = "; a.print(std::cout) << "\n";
     std::cout << "b = "; b.print(std::cout) << "\n";
-    std::cout << "c = "; c.print(std::cout) << "\n";
-
 
     Five sum = a.add(b);
-    std::cout << "a + b = "; sum.print(std::cout) << "\n";
+    std::cout << "a + b = ";
+    sum.print(std::cout) << "\n";
 
-    Five diff = a.subtract(b);
-    std::cout << "a - b = "; diff.print(std::cout) << "\n";
+    Five diff = a.subtract(Five("12"));
+    std::cout << "a - 12 = ";
+    diff.print(std::cout) << "\n";
 
-    std::cout << "a > b ? " << (a.greater(b) ? "YES" : "NO") << "\n";
-    std::cout << "a < c ? " << (a.less(c) ? "YES" : "NO") << "\n";
-    std::cout << "a == b ? " << (a.equals(b) ? "YES" : "NO") << "\n";
-    std::cout << "a == a ? " << (a.equals(a) ? "YES" : "NO") << "\n";
+    // === 3. Compare ===
+    std::cout << "\n--- Compare ---\n";
+    std::cout << "a == b ? " << (a.equals(b) ? "Yes" : "No") << "\n";
+    std::cout << "a > b ? " << (a.greater(b) ? "Yes" : "No") << "\n";
+    std::cout << "a < b ? " << (a.less(b) ? "Yes" : "No") << "\n";
 
+    // === 4. Exceptions ===
+    std::cout << "\n--- Exception test ---\n";
+    try {
+        Five x("10");
+        Five y("21");
+        std::cout << "x = "; x.print(std::cout);
+        std::cout << ", y = "; y.print(std::cout);
+        std::cout << "\n";
+
+        Five bad = x.subtract(y); // should throw
+        std::cout << "Result (no throw): ";
+        bad.print(std::cout) << "\n";
+    } catch (const std::exception& e) {
+        std::cerr << "Caught exception: " << e.what() << "\n";
+    }
+
+    // === 5. Move and assign ===
+    std::cout << "\n--- Move and assign ---\n";
+
+    Five c("444");
+    Five d("11");
+
+    std::cout << "c = "; c.print(std::cout);
+    std::cout << ", d = "; d.print(std::cout);
+    std::cout << "\n";
+
+    Five e = c.add(d);
+    std::cout << "e = c + d = ";
+    e.print(std::cout) << "\n";
+
+    Five f;
+    f = std::move(e);
+    std::cout << "f (after move): ";
+    f.print(std::cout) << "\n";
+
+    std::cout << "e (after move): ";
+    e.print(std::cout) << "\n";
+
+    std::cout << "\n--- End of program ---\n";
+    std::cout << "All destructors will be called now.\n";
+
+    std::cout << "\n=== End ===\n\n";
+    
     return 0;
 }
