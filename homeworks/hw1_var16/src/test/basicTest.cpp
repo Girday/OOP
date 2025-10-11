@@ -12,7 +12,7 @@ TEST(gcdTest, PositiveNumbers) {
 TEST(gcdTest, WithZero) {
     EXPECT_EQ(gcd(0, 5), 5);
     EXPECT_EQ(gcd(7, 0), 7);
-    EXPECT_EQ(gcd(0, 0), 0); // gcd(0,0) обычно определяют как 0
+    EXPECT_EQ(gcd(0, 0), 0); // gcd(0,0) обычно определяют, как 0
 }
 
 TEST(gcdTest, NegativeNumbers) {
