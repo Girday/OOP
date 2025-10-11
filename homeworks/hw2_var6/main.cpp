@@ -41,11 +41,11 @@ int main() {
     std::cout << "a = "; a.print(std::cout) << "\n";
     std::cout << "b = "; b.print(std::cout) << "\n";
 
-    Five sum = a.add(b);
+    Five sum(a.add(b));
     std::cout << "a + b = ";
     sum.print(std::cout) << "\n";
 
-    Five diff = a.subtract(Five("40"));
+    Five diff(a.subtract(Five("40")));
     std::cout << "a - 40 = ";
     diff.print(std::cout) << "\n";
 
@@ -81,12 +81,11 @@ int main() {
     std::cout << ", d = "; d.print(std::cout);
     std::cout << "\n";
 
-    Five e = c.add(d);
+    Five e(c.add(d));
     std::cout << "e = c + d = ";
     e.print(std::cout) << "\n";
 
-    Five f;
-    f = std::move(e);
+    Five f(std::move(e));
     std::cout << "f (after move): ";
     f.print(std::cout) << "\n";
 

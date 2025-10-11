@@ -44,36 +44,6 @@ Five::Five(Five&& other) noexcept : size(other.size), digits(other.digits) { // 
     other.digits = nullptr;
 }
 
-// === ОПЕРАТОРЫ ПРИСВАИВАНИЯ ===
-
-Five& Five::operator=(const Five& other) { // копирующий
-    if (this != &other) {
-        delete[] digits;
-        
-        size = other.size;
-        digits = new unsigned char[size];
-        
-        for (size_t i = 0; i < size; ++i)
-            digits[i] = other.digits[i];
-    }
-
-    return *this;
-}
-
-Five& Five::operator=(Five&& other) noexcept { // перемещающий
-    if (this != &other) {
-        delete[] digits;
-        
-        size = other.size;
-        digits = other.digits;
-        
-        other.size = 0;
-        other.digits = nullptr;
-    }
-
-    return *this;
-}
-
 // === АРИФМЕТИЧЕСКИЕ ОПЕРАЦИИ ===
 
 Five Five::add(const Five& other) const {
@@ -124,6 +94,20 @@ Five Five::subtract(const Five& other) const {
 
     res.normalize();
     return res;
+}
+
+Five& Five::copy(const Five& other) { // копирующий
+    if (this != &other) {
+        delete[] digits;
+        
+        size = other.size;
+        digits = new unsigned char[size];
+        
+        for (size_t i = 0; i < size; ++i)
+            digits[i] = other.digits[i];
+    }
+
+    return *this;
 }
 
 // === СРАВНЕНИЯ ===

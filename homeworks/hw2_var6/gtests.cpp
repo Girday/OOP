@@ -78,7 +78,7 @@ TEST(FiveConstructorTest, MoveConstructor) {
 TEST(FiveAddTest, SimpleAddition) {
     Five a("12");
     Five b("23");
-    Five result = a.add(b);
+    Five result(a.add(b));
     
     std::ostringstream oss;
     result.print(oss);
@@ -89,7 +89,7 @@ TEST(FiveAddTest, SimpleAddition) {
 TEST(FiveAddTest, AdditionWithCarry) {
     Five a("44");
     Five b("11");
-    Five result = a.add(b);
+    Five result(a.add(b));
     
     std::ostringstream oss;
     result.print(oss);
@@ -100,7 +100,7 @@ TEST(FiveAddTest, AdditionWithCarry) {
 TEST(FiveAddTest, AdditionWithZero) {
     Five a("123");
     Five b("0");
-    Five result = a.add(b);
+    Five result(a.add(b));
     
     std::ostringstream oss;
     result.print(oss);
@@ -111,7 +111,7 @@ TEST(FiveAddTest, AdditionWithZero) {
 TEST(FiveAddTest, AdditionDifferentSizes) {
     Five a("1234");
     Five b("2");
-    Five result = a.add(b);
+    Five result(a.add(b));
     
     std::ostringstream oss;
     result.print(oss);
@@ -122,7 +122,7 @@ TEST(FiveAddTest, AdditionDifferentSizes) {
 TEST(FiveAddTest, AdditionMaxDigits) {
     Five a("444");
     Five b("1");
-    Five result = a.add(b);
+    Five result(a.add(b));
     
     std::ostringstream oss;
     result.print(oss);
@@ -135,7 +135,7 @@ TEST(FiveAddTest, AdditionMaxDigits) {
 TEST(FiveSubtractTest, SimpleSubtraction) {
     Five a("43");
     Five b("21");
-    Five result = a.subtract(b);
+    Five result(a.subtract(b));
     
     std::ostringstream oss;
     result.print(oss);
@@ -146,7 +146,7 @@ TEST(FiveSubtractTest, SimpleSubtraction) {
 TEST(FiveSubtractTest, SubtractionWithBorrow) {
     Five a("100");
     Five b("1");
-    Five result = a.subtract(b);
+    Five result(a.subtract(b));
     
     std::ostringstream oss;
     result.print(oss);
@@ -157,7 +157,7 @@ TEST(FiveSubtractTest, SubtractionWithBorrow) {
 TEST(FiveSubtractTest, SubtractionResultZero) {
     Five a("123");
     Five b("123");
-    Five result = a.subtract(b);
+    Five result(a.subtract(b));
     
     std::ostringstream oss;
     result.print(oss);
@@ -175,7 +175,7 @@ TEST(FiveSubtractTest, SubtractionNegativeResult) {
 TEST(FiveSubtractTest, SubtractionFromLarger) {
     Five a("1234");
     Five b("234");
-    Five result = a.subtract(b);
+    Five result(a.subtract(b));
     
     std::ostringstream oss;
     result.print(oss);
@@ -295,7 +295,7 @@ TEST(FiveComplexTest, ChainedOperations) {
     Five b("23");
     Five c("12");
     
-    Five result = a.add(b).subtract(c);
+    Five result(a.add(b).subtract(c));
     
     std::ostringstream oss;
     result.print(oss);
@@ -307,7 +307,7 @@ TEST(FiveComplexTest, CopyAndModify) {
     Five original("123");
     Five copy(original);
     
-    Five modified = copy.add(Five("1"));
+    Five modified(copy.add(Five("1")));
     
     EXPECT_FALSE(original.equals(modified));
     
@@ -323,7 +323,7 @@ TEST(FiveComplexTest, CopyAndModify) {
 TEST(FiveComplexTest, NormalizationAfterSubtraction) {
     Five a("1000");
     Five b("1");
-    Five result = a.subtract(b);
+    Five result(a.subtract(b));
     
     std::ostringstream oss;
     result.print(oss);
@@ -344,7 +344,7 @@ TEST(FiveEdgeCaseTest, LeadingZeros) {
 TEST(FiveEdgeCaseTest, MultipleAdditions) {
     Five sum("0");
     for (int i = 0; i < 5; ++i) {
-        sum = sum.add(Five("1"));
+        sum.copy(sum.add(Five("1")));
     }
     
     std::ostringstream oss;
