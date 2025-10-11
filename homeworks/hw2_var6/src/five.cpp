@@ -69,7 +69,6 @@ Five Five::add(const Five& other) const {
     return res;
 }
 
-
 Five Five::subtract(const Five& other) const {
     if (less(other))
         throw std::invalid_argument("Res is less than 0");
@@ -96,7 +95,7 @@ Five Five::subtract(const Five& other) const {
     return res;
 }
 
-Five& Five::copy(const Five& other) { // копирующий
+Five& Five::copy(const Five& other) {
     if (this != &other) {
         delete[] digits;
         
