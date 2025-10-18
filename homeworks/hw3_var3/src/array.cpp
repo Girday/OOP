@@ -8,7 +8,8 @@ void Array::Add(std::shared_ptr<Figure> fig) {
 }
 
 void Array::Remove(size_t index) {
-    if (index >= data.size()) throw std::out_of_range("Invalid index");
+    if (index >= data.size()) 
+        throw std::out_of_range("Invalid index");
     data.erase(data.begin() + index);
 }
 
