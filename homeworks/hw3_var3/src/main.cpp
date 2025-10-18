@@ -4,6 +4,7 @@
 #include "array.h"
 
 #include <iostream>
+#include <limits>
 #include <memory>
 
 int main() {
@@ -20,7 +21,13 @@ int main() {
                      "\n7. Remove Figure"
                      "\n0. Exit"
                      "\n-> ";
-        std::cin >> choice;
+
+        if (!(std::cin >> choice)) {
+            std::cin.clear();
+            std::cin.ignore(INT_MAX, '\n');
+            std::cout << "Invalid input. Please enter a number.\n";
+            continue;
+        }
 
         switch (choice) {
             case 0:
