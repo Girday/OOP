@@ -21,6 +21,6 @@ protected:
     void Read(std::istream& is) override;
 
 private:
-    double d1, d2; // диагонали
+    double d1, d2;
     std::pair<double,double> center;
 };

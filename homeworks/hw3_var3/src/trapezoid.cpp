@@ -41,7 +41,6 @@ std::pair<double,double> Trapezoid::Center() const {
     return {cx / 4.0, cy / 4.0};
 }
 
-// площадь по формуле Гаусса (shoelace)
 Trapezoid::operator double() const {
     double area = 0;
     for (int i = 0; i < 4; ++i) {
