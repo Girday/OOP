@@ -6,13 +6,11 @@ class Rectangle : public Figure {
 public:
     Rectangle();
     Rectangle(double x1, double y1, double x2, double y2);
-
     Rectangle(const Rectangle& other);
     Rectangle(Rectangle&& other) noexcept;
 
     Rectangle& operator=(const Rectangle& other);
     Rectangle& operator=(Rectangle&& other) noexcept;
-
     bool operator==(const Figure& other) const override;
 
     std::pair<double, double> Center() const override;

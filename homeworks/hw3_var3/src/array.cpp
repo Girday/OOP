@@ -13,10 +13,9 @@ void Array::Remove(size_t index) {
 }
 
 void Array::PrintAll() const {
-    for (size_t i = 0; i < data.size(); ++i) {
+    for (size_t i = 0; i < data.size(); ++i)
         std::cout << i << ": " << *data[i]
                   << " | Area = " << static_cast<double>(*data[i]) << "\n";
-    }
 }
 
 void Array::PrintCenters() const {

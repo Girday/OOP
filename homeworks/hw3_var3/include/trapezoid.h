@@ -7,7 +7,6 @@ class Trapezoid : public Figure {
 public:
     Trapezoid();
     Trapezoid(const std::array<std::pair<double,double>,4>& pts);
-
     Trapezoid(const Trapezoid& other);
     Trapezoid(Trapezoid&& other) noexcept;
 
@@ -15,7 +14,6 @@ public:
     Trapezoid& operator=(Trapezoid&& other) noexcept;
 
     bool operator==(const Figure& other) const override;
-
     std::pair<double,double> Center() const override;
     operator double() const override;
 

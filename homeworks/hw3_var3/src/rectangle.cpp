@@ -12,8 +12,7 @@ Rectangle::Rectangle(const Rectangle& other)
     : x1(other.x1), y1(other.y1), x2(other.x2), y2(other.y2) {}
 
 Rectangle::Rectangle(Rectangle&& other) noexcept
-    : x1(other.x1), y1(other.y1), x2(other.x2), y2(other.y2)
-{
+    : x1(other.x1), y1(other.y1), x2(other.x2), y2(other.y2) {
     other.x1 = other.y1 = other.x2 = other.y2 = 0;
 }
 
@@ -38,7 +37,8 @@ Rectangle& Rectangle::operator=(Rectangle&& other) noexcept {
 
 bool Rectangle::operator==(const Figure& other) const {
     const Rectangle* o = dynamic_cast<const Rectangle*>(&other);
-    if (!o) return false;
+    if (!o) 
+        return false;
     return (x1 == o->x1 && y1 == o->y1 && x2 == o->x2 && y2 == o->y2);
 }
 
