@@ -14,12 +14,12 @@ public:
     bool operator==(const Figure& other) const override;
 
     std::pair<double, double> Center() const override;
-    operator double() const override; // площадь
+    operator double() const override;
 
 protected:
     void Print(std::ostream& os) const override;
     void Read(std::istream& is) override;
 
 private:
-    double x1, y1, x2, y2; // противоположные углы прямоугольника
+    double x1, y1, x2, y2;
 };

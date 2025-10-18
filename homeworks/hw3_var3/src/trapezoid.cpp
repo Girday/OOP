@@ -4,17 +4,15 @@
 #include <stdexcept>
 
 Trapezoid::Trapezoid() {
-    for (auto& p : points) p = {0,0};
+    for (auto& p : points) 
+        p = {0,0};
 }
 
-Trapezoid::Trapezoid(const std::array<std::pair<double,double>,4>& pts)
-    : points(pts) {}
+Trapezoid::Trapezoid(const std::array<std::pair<double,double>,4>& pts) : points(pts) {}
 
-Trapezoid::Trapezoid(const Trapezoid& other)
-    : points(other.points) {}
+Trapezoid::Trapezoid(const Trapezoid& other) : points(other.points) {}
 
-Trapezoid::Trapezoid(Trapezoid&& other) noexcept
-    : points(other.points) {}
+Trapezoid::Trapezoid(Trapezoid&& other) noexcept : points(std::move(other.points)) {}
 
 Trapezoid& Trapezoid::operator=(const Trapezoid& other) {
     if (this != &other)
@@ -24,7 +22,7 @@ Trapezoid& Trapezoid::operator=(const Trapezoid& other) {
 
 Trapezoid& Trapezoid::operator=(Trapezoid&& other) noexcept {
     if (this != &other)
-        points = other.points;
+        points = std::move(other.points);
     return *this;
 }
 
@@ -57,8 +55,12 @@ Trapezoid::operator double() const {
 void Trapezoid::Print(std::ostream& os) const {
     os << "Trapezoid[";
     for (int i = 0; i < 4; ++i) {
-        os << "(" << points[i].first << "," << points[i].second << ")";
-        if (i != 3) os << ",";
+        os << "(" << points[i].first 
+           << "," << points[i].second 
+           << ")";
+        
+        if (i != 3) 
+            os << ",";
     }
     os << "]";
 }

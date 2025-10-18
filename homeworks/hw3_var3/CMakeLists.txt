@@ -14,7 +14,6 @@ set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 file(GLOB SOURCES ${SOURCE_DIR}/*.cpp)
 
-message(STATUS "Sources: ${SOURCES}")
 add_executable(LAB3_VAR3 ${SOURCES})
 
 target_include_directories(LAB3_VAR3 PUBLIC ${INCLUDE_DIR})

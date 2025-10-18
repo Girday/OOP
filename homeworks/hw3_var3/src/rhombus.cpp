@@ -11,11 +11,9 @@ Rhombus::Rhombus(const Rhombus& other)
     : d1(other.d1), d2(other.d2), center(other.center) {}
 
 Rhombus::Rhombus(Rhombus&& other) noexcept
-    : d1(other.d1), d2(other.d2), center(other.center)
-{
-    other.d1 = other.d2 = 0;
-    other.center = {0,0};
-}
+    : d1(std::move(other.d1)),
+      d2(std::move(other.d2)),
+      center(std::move(other.center)) {}
 
 Rhombus& Rhombus::operator=(const Rhombus& other) {
     if (this != &other) {
@@ -28,18 +26,19 @@ Rhombus& Rhombus::operator=(const Rhombus& other) {
 
 Rhombus& Rhombus::operator=(Rhombus&& other) noexcept {
     if (this != &other) {
-        d1 = other.d1;
-        d2 = other.d2;
-        center = other.center;
-        other.d1 = other.d2 = 0;
-        other.center = {0,0};
+        d1 = std::move(other.d1);
+        d2 = std::move(other.d2);
+        center = std::move(other.center);
     }
     return *this;
 }
 
 bool Rhombus::operator==(const Figure& other) const {
     const Rhombus* o = dynamic_cast<const Rhombus*>(&other);
-    if (!o) return false;
+    
+    if (!o) 
+        return false;
+
     return (d1 == o->d1 && d2 == o->d2 && center == o->center);
 }
 
@@ -52,8 +51,11 @@ Rhombus::operator double() const {
 }
 
 void Rhombus::Print(std::ostream& os) const {
-    os << "Rhombus[d1=" << d1 << ", d2=" << d2
-       << ", center=(" << center.first << "," << center.second << ")]";
+    os << "Rhombus[d1=" << d1 
+       << ", d2=" << d2
+       << ", center=(" << center.first 
+       << "," << center.second 
+       << ")]";
 }
 
 void Rhombus::Read(std::istream& is) {

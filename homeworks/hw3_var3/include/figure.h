@@ -3,18 +3,12 @@
 #include <iostream>
 #include <utility>
 
-// === Абстрактный базовый класс ===
 class Figure {
 public:
     virtual ~Figure() noexcept = default;
-
-    // Геометрический центр
     virtual std::pair<double, double> Center() const = 0;
-
-    // Площадь (через оператор приведения к double)
     virtual operator double() const = 0;
 
-    // Ввод / вывод
     friend std::ostream& operator<<(std::ostream& os, const Figure& fig) {
         fig.Print(os);
         return os;
