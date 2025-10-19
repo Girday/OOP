@@ -1,12 +1,12 @@
 #pragma once
 
 #include "figure.h"
-#include <array>
+#include <utility>
 
 class Trapezoid : public Figure {
 public:
     Trapezoid();
-    Trapezoid(const std::array<std::pair<double,double>,4>& pts);
+    Trapezoid(double top, double bottom, double h, std::pair<double,double> center = {0.0,0.0});
     Trapezoid(const Trapezoid& other);
     Trapezoid(Trapezoid&& other) noexcept;
 
@@ -22,5 +22,6 @@ protected:
     void Read(std::istream& is) override;
 
 private:
-    std::array<std::pair<double,double>,4> points;
+    double topBase, bottomBase, height;
+    std::pair<double,double> center;
 };

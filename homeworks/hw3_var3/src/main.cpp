@@ -30,7 +30,7 @@ int main() {
         switch (choice) {
             case 0:
                 return 0;
-
+            
             case 1: {
                 // СОЗДАНИЕ УМНОГО УКАЗАТЕЛЯ: make_shared создаёт объект и оборачивает его
                 // в shared_ptr для автоматического управления памятью
@@ -44,7 +44,7 @@ int main() {
 
             case 2: {
                 auto trap = std::make_shared<Trapezoid>();
-                std::cout << "Enter 4 points (x y): ";
+                std::cout << "Enter topBase bottomBase height centerX centerY: ";
                 std::cin >> *trap;
                 figures.Add(trap);
                 break;
