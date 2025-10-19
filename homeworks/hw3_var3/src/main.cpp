@@ -34,10 +34,13 @@ int main() {
                 return 0;
 
             case 1: {
+                // СОЗДАНИЕ УМНОГО УКАЗАТЕЛЯ: make_shared создаёт объект и оборачивает его
+                // в shared_ptr для автоматического управления памятью
                 auto rect = std::make_shared<Rectangle>();
                 std::cout << "Enter x1 y1 x2 y2: ";
                 std::cin >> *rect;
                 figures.Add(rect);
+                // НЕТ delete! Объект удалится автоматически, когда больше не будет нужен
                 break;
             }
 
