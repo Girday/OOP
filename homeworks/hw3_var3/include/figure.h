@@ -29,6 +29,8 @@ public:
     virtual bool operator==(const Figure& other) const = 0;
 
 protected:
+    Figure() = default;
+
     virtual void Print(std::ostream& os) const = 0;
     virtual void Read(std::istream& is) = 0;
 };
