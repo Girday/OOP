@@ -11,6 +11,7 @@ public:
     void PrintAll() const;
     double TotalArea() const;
     void PrintCenters() const;
+    size_t Size() const;
 
 private:
     // УМНЫЕ УКАЗАТЕЛИ: автоматическое управление памятью

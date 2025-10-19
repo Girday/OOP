@@ -44,3 +44,7 @@ double Array::TotalArea() const {
         total += static_cast<double>(*f);
     return total;
 }
+
+size_t Array::Size() const {
+    return data.size();
+}
