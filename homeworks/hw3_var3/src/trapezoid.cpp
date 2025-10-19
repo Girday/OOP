@@ -1,7 +1,6 @@
 #include "trapezoid.h"
 
 #include <cmath>
-#include <stdexcept>
 
 Trapezoid::Trapezoid() {
     for (auto& p : points) 

@@ -1,7 +1,6 @@
 #include "rectangle.h"
 
 #include <cmath>
-#include <stdexcept>
 
 Rectangle::Rectangle() : x1(0), y1(0), x2(0), y2(0) {}
 
