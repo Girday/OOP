@@ -1,11 +1,15 @@
 #include "rectangle.h"
 
 #include <cmath>
+#include <stdexcept>
 
-Rectangle::Rectangle() : x1(0), y1(0), x2(0), y2(0) {}
+Rectangle::Rectangle() : x1(0), y1(0), x2(1), y2(1) {}
 
 Rectangle::Rectangle(double _x1, double _y1, double _x2, double _y2)
-    : x1(_x1), y1(_y1), x2(_x2), y2(_y2) {}
+    : x1(_x1), y1(_y1), x2(_x2), y2(_y2) {
+    if (x1 == x2 || y1 == y2)
+        throw std::invalid_argument("Rectangle sides cannot be zero.");
+}
 
 Rectangle::Rectangle(const Rectangle& other)
     : x1(other.x1), y1(other.y1), x2(other.x2), y2(other.y2) {}
@@ -61,4 +65,6 @@ void Rectangle::Print(std::ostream& os) const {
 
 void Rectangle::Read(std::istream& is) {
     is >> x1 >> y1 >> x2 >> y2;
+    if (x1 == x2 || y1 == y2)
+        throw std::invalid_argument("Rectangle sides cannot be zero.");
 }

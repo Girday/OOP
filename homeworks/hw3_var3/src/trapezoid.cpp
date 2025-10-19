@@ -1,8 +1,8 @@
 #include "trapezoid.h"
-#include <cmath>
+
 #include <stdexcept>
 
-Trapezoid::Trapezoid() : topBase(0), bottomBase(0), height(0), center({0,0}) {}
+Trapezoid::Trapezoid() : topBase(1), bottomBase(2), height(1), center({0,0}) {}
 
 Trapezoid::Trapezoid(double top, double bottom, double h, std::pair<double, double> c)
     : topBase(top), bottomBase(bottom), height(h), center(c) {
