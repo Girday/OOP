@@ -4,8 +4,6 @@
 #include "array.h"
 
 #include <iostream>
-#include <limits>
-#include <memory>
 
 int main() {
     Array figures;
