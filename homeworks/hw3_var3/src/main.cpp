@@ -5,6 +5,11 @@
 
 #include <iostream>
 
+void ClearInput() {
+    std::cin.clear();
+    std::cin.ignore(INT_MAX, '\n');
+}
+
 int main() {
     Array figures;
     int choice;
@@ -21,8 +26,7 @@ int main() {
                      "\n-> ";
 
         if (!(std::cin >> choice)) {
-            std::cin.clear();
-            std::cin.ignore(INT_MAX, '\n');
+            ClearInput();
             std::cout << "Invalid input. Please enter a number.\n";
             continue;
         }
@@ -36,8 +40,13 @@ int main() {
                 // в shared_ptr для автоматического управления памятью
                 auto rect = std::make_shared<Rectangle>();
                 std::cout << "Enter x1 y1 x2 y2: ";
-                std::cin >> *rect;
-                figures.Add(rect);
+                try {
+                    std::cin >> *rect;
+                    figures.Add(rect);
+                } catch (const std::exception& e) {
+                    std::cerr << "Error creating rectangle: " << e.what() << "\n";
+                    ClearInput();
+                }
                 // НЕТ delete! Объект удалится автоматически, когда больше не будет нужен
                 break;
             }
@@ -45,16 +54,26 @@ int main() {
             case 2: {
                 auto trap = std::make_shared<Trapezoid>();
                 std::cout << "Enter topBase bottomBase height centerX centerY: ";
-                std::cin >> *trap;
-                figures.Add(trap);
+                try {
+                    std::cin >> *trap;
+                    figures.Add(trap);
+                } catch (const std::exception& e) {
+                    std::cerr << "Error creating trapezoid: " << e.what() << "\n";
+                    ClearInput();
+                }
                 break;
             }
 
             case 3: {
                 auto rh = std::make_shared<Rhombus>();
                 std::cout << "Enter d1 d2 centerX centerY: ";
-                std::cin >> *rh;
-                figures.Add(rh);
+                try {
+                    std::cin >> *rh;
+                    figures.Add(rh);
+                } catch (const std::exception& e) {
+                    std::cerr << "Error creating rhombus: " << e.what() << "\n";
+                    ClearInput();
+                }
                 break;
             }
 
@@ -76,11 +95,16 @@ int main() {
             case 7: {
                 size_t idx;
                 std::cout << "Index to remove: ";
-                std::cin >> idx;
+                if (!(std::cin >> idx)) {
+                    ClearInput();
+                    std::cout << "Invalid index. Please enter a valid index: " 
+                              << "from 0 to " << (figures.Size() - 1) << ".\n";
+                    break;
+                }
                 try {
                     figures.Remove(idx);
                 } catch (const std::exception& e) {
-                    std::cerr << e.what() << "\n";
+                    std::cerr << "Error removing figure: " << e.what() << "\n";
                 }
                 break;
             }
