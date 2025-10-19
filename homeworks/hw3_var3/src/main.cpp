@@ -40,6 +40,7 @@ int main() {
                 // в shared_ptr для автоматического управления памятью
                 auto rect = std::make_shared<Rectangle>();
                 std::cout << "Enter x1 y1 x2 y2: ";
+                
                 try {
                     std::cin >> *rect;
                     figures.Add(rect);
@@ -54,6 +55,7 @@ int main() {
             case 2: {
                 auto trap = std::make_shared<Trapezoid>();
                 std::cout << "Enter topBase bottomBase height centerX centerY: ";
+
                 try {
                     std::cin >> *trap;
                     figures.Add(trap);
@@ -67,6 +69,7 @@ int main() {
             case 3: {
                 auto rh = std::make_shared<Rhombus>();
                 std::cout << "Enter d1 d2 centerX centerY: ";
+
                 try {
                     std::cin >> *rh;
                     figures.Add(rh);
@@ -93,18 +96,27 @@ int main() {
             }
 
             case 7: {
+                if (figures.Size() == 0) {
+                    std::cout << "No figures to remove.\n";
+                    break;
+                }
+                
                 size_t idx;
                 std::cout << "Index to remove: ";
+                
                 if (!(std::cin >> idx)) {
                     ClearInput();
                     std::cout << "Invalid index. Please enter a valid index: " 
                               << "from 0 to " << (figures.Size() - 1) << ".\n";
                     break;
                 }
+                
                 try {
                     figures.Remove(idx);
                 } catch (const std::exception& e) {
                     std::cerr << "Error removing figure: " << e.what() << "\n";
+                    std::cerr << "Invalid index. Please enter a valid index: " 
+                              << "from 0 to " << (figures.Size() - 1) << ".\n";
                 }
                 break;
             }
