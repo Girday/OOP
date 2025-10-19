@@ -1,11 +1,12 @@
 #pragma once
 
 #include "figure.h"
+#include <utility>
 
 class Rhombus : public Figure {
 public:
     Rhombus();
-    Rhombus(double d1, double d2, std::pair<double,double> center = {0.0,0.0});
+    Rhombus(double d1, double d2, std::pair<double, double> center = {0.0, 0.0});
     Rhombus(const Rhombus& other);
     Rhombus(Rhombus&& other) noexcept;
 
@@ -13,7 +14,7 @@ public:
     Rhombus& operator=(Rhombus&& other) noexcept;
     bool operator==(const Figure& other) const override;
 
-    std::pair<double,double> Center() const override;
+    std::pair<double, double> Center() const override;
     operator double() const override;
 
 protected:
@@ -22,5 +23,5 @@ protected:
 
 private:
     double d1, d2;
-    std::pair<double,double> center;
+    std::pair<double, double> center;
 };

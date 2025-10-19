@@ -2,8 +2,10 @@
 
 Rhombus::Rhombus() : d1(0), d2(0), center({0,0}) {}
 
-Rhombus::Rhombus(double _d1, double _d2, std::pair<double,double> c)
-    : d1(_d1), d2(_d2), center(c) {}
+Rhombus::Rhombus(double _d1, double _d2, std::pair<double, double> c) : d1(_d1), d2(_d2), center(c) {
+    if (d1 < 0 || d2 < 0)
+        throw std::invalid_argument("Rhombus diagonals cannot be negative.");
+}
 
 Rhombus::Rhombus(const Rhombus& other)
     : d1(other.d1), d2(other.d2), center(other.center) {}
@@ -40,7 +42,7 @@ bool Rhombus::operator==(const Figure& other) const {
     return (d1 == o->d1 && d2 == o->d2 && center == o->center);
 }
 
-std::pair<double,double> Rhombus::Center() const {
+std::pair<double, double> Rhombus::Center() const {
     return center;
 }
 
