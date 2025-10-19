@@ -4,7 +4,7 @@
 
 Trapezoid::Trapezoid() : topBase(1), bottomBase(2), height(1), center({0,0}) {}
 
-Trapezoid::Trapezoid(double top, double bottom, double h, std::pair<double, double> c)
+Trapezoid::Trapezoid(double top, double bottom, double h, Point c)
     : topBase(top), bottomBase(bottom), height(h), center(c) {
     if (topBase < 0 || bottomBase < 0 || height < 0)
         throw std::invalid_argument("Trapezoid parameters cannot be negative.");
@@ -48,7 +48,7 @@ bool Trapezoid::operator==(const Figure& other) const {
             height == o->height && center == o->center);
 }
 
-std::pair<double, double> Trapezoid::Center() const {
+Point Trapezoid::Center() const {
     return center;
 }
 

@@ -47,7 +47,7 @@ bool Rectangle::operator==(const Figure& other) const {
     return (x1 == o->x1 && y1 == o->y1 && x2 == o->x2 && y2 == o->y2);
 }
 
-std::pair<double,double> Rectangle::Center() const {
+Point Rectangle::Center() const {
     return { (x1 + x2) / 2.0, (y1 + y2) / 2.0 };
 }
 

@@ -3,6 +3,8 @@
 #include <iostream>
 #include <utility>
 
+using Point = std::pair<double, double>;
+
 class Figure {
 public:
 
@@ -13,7 +15,7 @@ public:
     //     virtual - "Это поведение может меняться в наследниках"
 
     virtual ~Figure() noexcept = default;
-    virtual std::pair<double, double> Center() const = 0;
+    virtual Point Center() const = 0;
     virtual operator double() const = 0;
 
     friend std::ostream& operator<<(std::ostream& os, const Figure& fig) {

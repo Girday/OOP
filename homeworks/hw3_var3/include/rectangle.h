@@ -14,7 +14,7 @@ public:
     Rectangle& operator=(Rectangle&& other) noexcept;
     bool operator==(const Figure& other) const override;
 
-    std::pair<double, double> Center() const override;
+    Point Center() const override;
     operator double() const override;
 
 protected:
