@@ -6,8 +6,8 @@ Trapezoid::Trapezoid() : topBase(1), bottomBase(2), height(1), center({0,0}) {}
 
 Trapezoid::Trapezoid(double top, double bottom, double h, Point c)
     : topBase(top), bottomBase(bottom), height(h), center(c) {
-    if (topBase < 0 || bottomBase < 0 || height < 0)
-        throw std::invalid_argument("Trapezoid parameters cannot be negative.");
+    if (topBase <= 0 || bottomBase <= 0 || height <= 0)
+        throw std::invalid_argument("Trapezoid parameters must be positive.");
 }
 
 Trapezoid::Trapezoid(const Trapezoid& other)

@@ -5,8 +5,8 @@
 Rhombus::Rhombus() : d1(1), d2(1), center({0,0}) {}
 
 Rhombus::Rhombus(double _d1, double _d2, Point c) : d1(_d1), d2(_d2), center(c) {
-    if (d1 < 0 || d2 < 0)
-        throw std::invalid_argument("Rhombus diagonals cannot be negative.");
+    if (d1 <= 0 || d2 <= 0)
+        throw std::invalid_argument("Rhombus diagonals must be positive.");
 }
 
 Rhombus::Rhombus(const Rhombus& other)
