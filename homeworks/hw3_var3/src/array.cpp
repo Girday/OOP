@@ -3,7 +3,7 @@
 #include <iostream>
 #include <stdexcept>
 
-void Array::Add(std::shared_ptr<Figure> fig) {
+void Array::Add(std::unique_ptr<Figure> fig) {
     data.push_back(std::move(fig));
     std::cout << "Figure added. Total figures: " << data.size() << "\n";
 }

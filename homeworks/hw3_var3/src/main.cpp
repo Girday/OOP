@@ -37,14 +37,14 @@ int main() {
                 return 0;
             
             case 1: {
-                // СОЗДАНИЕ УМНОГО УКАЗАТЕЛЯ: make_shared создаёт объект и оборачивает его
-                // в shared_ptr для автоматического управления памятью
-                auto rect = std::make_shared<Rectangle>();
+                // СОЗДАНИЕ УМНОГО УКАЗАТЕЛЯ: make_unique создаёт объект и оборачивает его
+                // в unique_ptr для автоматического управления памятью
+                auto rect = std::make_unique<Rectangle>();
                 std::cout << "Enter x1 y1 x2 y2: ";
 
                 try {
                     std::cin >> *rect;
-                    figures.Add(rect);
+                    figures.Add(std::move(rect));
                 } catch (const std::exception& e) {
                     std::cerr << "Error creating rectangle: " << e.what() << "\n";
                     ClearInput();
@@ -54,12 +54,12 @@ int main() {
             }
 
             case 2: {
-                auto trap = std::make_shared<Trapezoid>();
+                auto trap = std::make_unique<Trapezoid>();
                 std::cout << "Enter topBase bottomBase height centerX centerY: ";
 
                 try {
                     std::cin >> *trap;
-                    figures.Add(trap);
+                    figures.Add(std::move(trap));
                 } catch (const std::exception& e) {
                     std::cerr << "Error creating trapezoid: " << e.what() << "\n";
                     ClearInput();
@@ -68,12 +68,12 @@ int main() {
             }
 
             case 3: {
-                auto rh = std::make_shared<Rhombus>();
+                auto rh = std::make_unique<Rhombus>();
                 std::cout << "Enter d1 d2 centerX centerY: ";
 
                 try {
                     std::cin >> *rh;
-                    figures.Add(rh);
+                    figures.Add(std::move(rh));
                 } catch (const std::exception& e) {
                     std::cerr << "Error creating rhombus: " << e.what() << "\n";
                     ClearInput();
