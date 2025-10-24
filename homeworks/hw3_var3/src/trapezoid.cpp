@@ -65,6 +65,6 @@ void Trapezoid::Print(std::ostream& os) const {
 
 void Trapezoid::Read(std::istream& is) {
     is >> topBase >> bottomBase >> height >> center.first >> center.second;
-    if (topBase < 0 || bottomBase < 0 || height < 0)
+    if (topBase <= 0 || bottomBase <= 0 || height <= 0)
         throw std::invalid_argument("Trapezoid parameters cannot be negative");
 }

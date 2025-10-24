@@ -62,6 +62,6 @@ void Rhombus::Print(std::ostream& os) const {
 
 void Rhombus::Read(std::istream& is) {
     is >> d1 >> d2 >> center.first >> center.second;
-    if (d1 < 0 || d2 < 0)
+    if (d1 <= 0 || d2 <= 0)
         throw std::invalid_argument("Rhombus diagonals cannot be negative.");
 }
