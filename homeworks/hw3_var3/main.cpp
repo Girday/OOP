@@ -37,8 +37,6 @@ int main() {
                 return 0;
             
             case 1: {
-                // СОЗДАНИЕ УМНОГО УКАЗАТЕЛЯ: make_unique создаёт объект и оборачивает его
-                // в unique_ptr для автоматического управления памятью
                 auto rect = std::make_unique<Rectangle>();
                 std::cout << "Enter x1 y1 x2 y2: ";
 
@@ -49,7 +47,6 @@ int main() {
                     std::cerr << "Error creating rectangle: " << e.what() << "\n";
                     ClearInput();
                 }
-                // НЕТ delete! Объект удалится автоматически, когда больше не будет нужен
                 break;
             }
 

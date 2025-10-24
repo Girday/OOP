@@ -7,13 +7,6 @@ using Point = std::pair<double, double>;
 
 class Figure {
 public:
-
-    // Эти конструкции создают безопасный и выразительный интерфейс:
-    //     = 0 - "Наследники, реализуйте это сами!"
-    //     const - "Я обещаю не менять объект"
-    //     = default - "Компилятор, сгенерируй стандартное поведение"
-    //     virtual - "Это поведение может меняться в наследниках"
-
     virtual ~Figure() noexcept = default;
     virtual Point Center() const = 0;
     virtual operator double() const = 0;
