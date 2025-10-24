@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(LAB3_VAR3
+project(HW3_VAR3
     VERSION 1.0.0
     DESCRIPTION "Лабораторная работа №3: Наследование и Полиморфизм"
     LANGUAGES CXX
@@ -19,13 +19,13 @@ add_library(GEOMETRY ${LIBRARY_SOURCES})
 
 target_include_directories(GEOMETRY PUBLIC ${INCLUDE_DIR})
 
-add_executable(LAB3_VAR3 ${SOURCE_DIR}/main.cpp)
+add_executable(HW3_VAR3 ${SOURCE_DIR}/main.cpp)
 
-target_link_libraries(LAB3_VAR3 PRIVATE GEOMETRY)
+target_link_libraries(HW3_VAR3 PRIVATE GEOMETRY)
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(GEOMETRY PRIVATE -Wall -Wextra -Wpedantic)
-    target_compile_options(LAB3_VAR3 PRIVATE -Wall -Wextra -Wpedantic)
+    target_compile_options(HW3_VAR3 PRIVATE -Wall -Wextra -Wpedantic)
 endif()
 
 
