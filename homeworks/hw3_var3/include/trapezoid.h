@@ -1,7 +1,6 @@
 #pragma once
 
 #include "figure.h"
-#include <utility>
 
 class Trapezoid : public Figure {
 public:

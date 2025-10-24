@@ -1,7 +1,6 @@
 #pragma once
 
 #include "figure.h"
-#include <utility>
 
 class Rhombus : public Figure {
 public:
