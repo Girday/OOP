@@ -6,6 +6,7 @@
 
 class Array {
 public:
+    Array();
     void Add(std::unique_ptr<Figure> fig);
     void Remove(size_t index);
     void PrintAll() const;
@@ -14,5 +15,8 @@ public:
     size_t Size() const;
 
 private:
-    std::vector<std::unique_ptr<Figure>> data;
+    std::unique_ptr<std::unique_ptr<Figure>[]> data;
+    size_t size;
+    size_t capacity;
+    void resize();
 };
