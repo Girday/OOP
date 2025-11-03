@@ -1,7 +1,6 @@
 #pragma once
 
 #include "point.h"
-#include <iostream>
 
 template <Scalar T>
 class Figure {
