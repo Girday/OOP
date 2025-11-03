@@ -41,6 +41,7 @@ protected:
     }
 
     void read(std::istream& is) override {
+        std::cout << "Enter bottom-left and top-right points: ";
         is >> *bl >> *tr;
     }
 

@@ -47,6 +47,7 @@ protected:
     }
 
     void read(std::istream& is) override {
+        std::cout << "Enter points A, B and C: ";
         is >> *a >> *b >> *c;
     }
 
