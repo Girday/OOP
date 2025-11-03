@@ -2,6 +2,8 @@
 
 #include "point.h"
 
+#include <memory>
+
 template <Scalar T>
 class Figure {
 public:

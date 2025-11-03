@@ -2,7 +2,6 @@
 
 #include "figure.h"
 
-#include <memory>
 #include <array>
 #include <cmath>
 #include <numbers>

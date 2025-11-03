@@ -1,8 +1,8 @@
 #pragma once
 
 #include "figure.h"
+
 #include <array>
-#include <memory>
 
 template <typename T>
 class Array {

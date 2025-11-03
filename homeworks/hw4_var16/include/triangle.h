@@ -2,7 +2,6 @@
 
 #include "figure.h"
 
-#include <memory>
 #include <cmath>
 
 template <Scalar T>
