@@ -24,8 +24,11 @@ public:
         return x == other.x && y == other.y;
     }
 
+    T x() const { return x; }
+    T y() const { return y; }
+    
     friend std::ostream& operator<<(std::ostream& os, const Point& p) {
-        return os << "(" << p.x << ", " << p.y << ")";
+        return os << "(" << p.x() << ", " << p.y() << ")";
     }
 
     friend std::istream& operator>>(std::istream& is, Point& p) {
