@@ -2,7 +2,6 @@
 
 #include "point.h"
 #include <iostream>
-#include <concepts>
 
 template <Scalar T>
 class Figure {
