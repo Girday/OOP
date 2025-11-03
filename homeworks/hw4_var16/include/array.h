@@ -81,6 +81,10 @@ public:
         std::cout << "Total Area: " << totalArea << "\n";
     }
 
+    int getSize() const {
+        return size;
+    }
+
 private:
     void grow() {
         size_t newCapacity = (capacity == 0) ? 2 : capacity * 2;
