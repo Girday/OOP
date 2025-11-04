@@ -18,18 +18,16 @@ void cinClear() {
 template <typename T>
 T readNumer(const std::string& prompt) {
     T value;
-    
-    while (true) {
-        std::cout << prompt;
-        
-        if (std::cin >> value) {
-            cinClear();
-            return value;
-        }
 
+    std::cout << prompt;
+    
+    if (std::cin >> value) {
         cinClear();
-        std::cout << "Invalid choice. Try a number between 0 and 5.\n";
+        return value;
     }
+
+    cinClear();
+    return -1;
 }
 
 int readInt(const std::string& prompt) {
