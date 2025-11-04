@@ -2,24 +2,35 @@
 
 #include "figure.h"
 
+#include <cmath>
+#include <array>
+
 template <Scalar T>
 class Square : public Figure<T> {
 public:
-    Square() : bl(std::make_unique<Point<T>>()),
-               tr(std::make_unique<Point<T>>()) {}
+    Square() {
+        for (auto& point : points)
+            point = std::make_unique<Point<T>>();
+    }
 
-    Square(const Point<T>& _bl, const Point<T>& _tr)
-        : bl(std::make_unique<Point<T>>(_bl)),
-          tr(std::make_unique<Point<T>>(_tr)) {}
-    
+    Square(const Point<T>& A, const Point<T>& B) {
+        calculatePoints(A, B);
+    }
+
     Point<T> center() const override {
-        T centerX = (bl->x() + tr->x()) / 2;
-        T centerY = (bl->y() + tr->y()) / 2;
-        return Point<T>(centerX, centerY);
+        T sumX{0}, sumY{0};
+
+        for (const auto& point : points) {
+            sumX += point->x();
+            sumY += point->y();
+        }
+
+        return Point<T>(sumX / 4, sumY / 4);
     }
 
     operator double() const override {
-        T side = tr->x() - bl->x();
+        T side = std::hypot(points[1]->x() - points[0]->x(),
+                            points[1]->y() - points[0]->y());
         return static_cast<double>(side * side);
     }
 
@@ -29,21 +40,46 @@ public:
         if (!otherSquare)
             return false;
 
-        return (*bl == *(otherSquare->bl)) &&
-               (*tr == *(otherSquare->tr));
+        for (size_t i = 0; i < 4; ++i)
+            if (*(points[i]) != *(otherSquare->points[i]))
+                return false;
+        
+        return true;
     }
 
 protected:
     void print(std::ostream& os) const override {
-        os << "Square: Bottom-Left" << *bl << ", Top-Right" << *tr;
+        os << "Square: ";
+        for (const auto& point : points)
+            os << *point << " ";
     }
 
     void read(std::istream& is) override {
-        std::cout << "Enter bottom-left and top-right points: ";
-        is >> *bl >> *tr;
+        Point<T> A, B;
+        std::cout << "Enter bottom side points (A and B): ";
+        is >> A >> B;
+        calculatePoints(A, B);
     }
 
 private:
-    std::unique_ptr<Point<T>> bl; // bottom-left
-    std::unique_ptr<Point<T>> tr; // top-right
+    std::array<std::unique_ptr<Point<T>>, 4> points;
+
+    void calculatePoints(const Point<T>& A, const Point<T>& B) {
+        T dx = B.x() - A.x();
+        T dy = B.y() - A.y();
+
+        if (dx == 0 && dy == 0) {
+            std::cout << "Points are identical, resetting to unit square.\n";
+            points[0] = std::make_unique<Point<T>>(0, 0);
+            points[1] = std::make_unique<Point<T>>(1, 0);
+            points[2] = std::make_unique<Point<T>>(1, 1);
+            points[3] = std::make_unique<Point<T>>(0, 1);
+            return;
+        }
+
+        points[0] = std::make_unique<Point<T>>(A);
+        points[1] = std::make_unique<Point<T>>(B);
+        points[2] = std::make_unique<Point<T>>(B.x() - dy, B.y() + dx);
+        points[3] = std::make_unique<Point<T>>(A.x() - dy, A.y() + dx);
+    }
 };
