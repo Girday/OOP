@@ -7,26 +7,37 @@
 template <Scalar T>
 class Triangle : public Figure<T> {
 public:
-    Triangle() : a(std::make_unique<Point<T>>()),
-                 b(std::make_unique<Point<T>>()),
-                 c(std::make_unique<Point<T>>()) {}
+    Triangle() {
+        for (auto& point : points)
+            point = std::make_unique<Point<T>>();
+    }
 
-    Triangle(const Point<T>& _a, const Point<T>& _b, const Point<T>& _c)
-        : a(std::make_unique<Point<T>>(_a)),
-          b(std::make_unique<Point<T>>(_b)),
-          c(std::make_unique<Point<T>>(_c)) {}
-    
+    Triangle(const Point<T>& A, const Point<T>& B, T h) {
+        calculatePoints(A, B, h);
+    }
+
     Point<T> center() const override {
-        T centerX = (a->x() + b->x() + c->x()) / 3;
-        T centerY = (a->y() + b->y() + c->y()) / 3;
-        return Point<T>(centerX, centerY);
+        T sumX{0}, sumY{0};
+
+        for (const auto& point : points) {
+            sumX += point->x();
+            sumY += point->y();
+        }
+
+        return Point<T>(sumX / 3, sumY / 3);
     }
 
     operator double() const override {
-        return 0.5 * std::abs(
-            (a->x() - c->x()) * (b->y() - a->y()) -
-            (a->x() - b->x()) * (c->y() - a->y())
-        );
+        T base = std::hypot(points[1]->x() - points[0]->x(),
+                            points[1]->y() - points[0]->y());
+
+        Point<T> middle_of_base = Point<T>((points[0]->x() + points[1]->x()) / 2,
+                                           (points[0]->y() + points[1]->y()) / 2);
+        
+        T height = std::hypot(points[2]->x() - middle_of_base.x(),
+                              points[2]->y() - middle_of_base.y());
+        
+        return static_cast<double>(0.5 * base * height);
     }
 
     bool operator==(const Figure<T>& other) const override {
@@ -35,23 +46,62 @@ public:
         if (!otherTriangle)
             return false;
 
-        return (*a == *(otherTriangle->a)) &&
-               (*b == *(otherTriangle->b)) &&
-               (*c == *(otherTriangle->c));
+        for (size_t i = 0; i < 3; ++i)
+            if (*(points[i]) != *(otherTriangle->points[i]))
+                return false;
+        
+        return true;
     }
 
 protected:
     void print(std::ostream& os) const override {
-        os << "Triangle: A" << *a << ", B" << *b << ", C" << *c;
+        os << "Triangle: ";
+        for (const auto& point : points)
+            os << *point << " ";
     }
 
     void read(std::istream& is) override {
-        std::cout << "Enter points A, B and C: ";
-        is >> *a >> *b >> *c;
+        Point<T> A, B;
+        T h;
+        std::cout << "Enter base points (A and B) and height (h): ";
+        is >> A >> B >> h;
+        calculatePoints(A, B, h);
     }
 
 private:
-    std::unique_ptr<Point<T>> a;
-    std::unique_ptr<Point<T>> b;
-    std::unique_ptr<Point<T>> c;
+    std::array<std::unique_ptr<Point<T>>, 3> points;
+
+    void calculatePoints(const Point<T>& A, const Point<T>& B, T h) {
+        if (h <= 0) {
+            std::cout << "Height must be positive, resetting to unit triangle.\n";
+            unitTriangle();
+            return;
+        }
+        
+        T dx = B.x() - A.x();
+        T dy = B.y() - A.y();
+        T length = std::hypot(dx, dy);
+
+        if (!length) {
+            std::cout << "Points are identical, resetting to unit triangle.\n";
+            unitTriangle();
+            return;
+        }
+
+        T nx = -dy / length;
+        T ny = dx / length;
+
+        T midX = (A.x() + B.x()) / 2;
+        T midY = (A.y() + B.y()) / 2;
+
+        points[0] = std::make_unique<Point<T>>(A);
+        points[1] = std::make_unique<Point<T>>(B);
+        points[2] = std::make_unique<Point<T>>(midX + nx * h, midY + ny * h);
+    }
+
+    void unitTriangle() {
+        points[0] = std::make_unique<Point<T>>(0, 0);
+        points[1] = std::make_unique<Point<T>>(1, 0);
+        points[2] = std::make_unique<Point<T>>(0.5, 1);
+    }
 };
