@@ -10,6 +10,11 @@
 
 #include <climits>
 
+void cinClear() {
+    std::cin.clear();
+    std::cin.ignore(INT_MAX, '\n');
+}
+
 template <typename T>
 T readNumer(const std::string& prompt) {
     T value;
@@ -17,16 +22,14 @@ T readNumer(const std::string& prompt) {
     while (true) {
         std::cout << prompt;
         
-        if (std::cin >> value) 
-            break;
-        
-        std::cin.clear();
-        std::cin.ignore(INT_MAX, '\n');
+        if (std::cin >> value) {
+            cinClear();
+            return value;
+        }
 
-        return -1;
+        cinClear();
+        std::cout << "Invalid choice. Try a number between 0 and 5.\n";
     }
-
-    return value;
 }
 
 int readInt(const std::string& prompt) {
