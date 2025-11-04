@@ -62,10 +62,10 @@ int main() {
 
             case 1: {
                 std::cout << "Select Figure Type:\n"
-                          << "1. Square\n"
-                          << "2. Triangle\n"
-                          << "3. Octagon\n"
-                          << "-> ";
+                          << "  1. Square\n"
+                          << "  2. Triangle\n"
+                          << "  3. Octagon\n"
+                          << "  -> ";
 
                 int figureType = readInt("");
 
