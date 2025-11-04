@@ -14,17 +14,18 @@ public:
             point = std::make_unique<Point<T>>();
     }
 
-    Octagon(const Point<T>& center, T radius) {
-        calculatePoints(center, radius);
+    Octagon(const Point<T>& center, T vertex) {
+        calculatePoints(center, vertex);
     }
 
     Point<T> center() const override {
-        T sumX = 0;
-        T sumY = 0;
+        T sumX{0}, sumY{0};
+
         for (const auto& point : points) {
             sumX += point->x();
             sumY += point->y();
         }
+
         return Point<T>(sumX / 8, sumY / 8);
     }
 
@@ -55,30 +56,31 @@ protected:
     }
 
     void read(std::istream& is) override {
-        Point<T> center;
-        T radius;
-        std::cout << "Enter center coordinates and radius: ";
-        is >> center >> radius;
-        calculatePoints(center, radius);
+        Point<T> center, vertex;
+        std::cout << "Enter center and one of the vertices coordinates: ";
+        is >> center >> vertex;
+        calculatePoints(center, vertex);
     }
 
-    void calculatePoints(const Point<T>& center, T radius) {
-        if (radius < 0) {
-            std::cout << "Radius must be positive. Multiplying by -1.\n";
-            radius = -radius;
-        } else if (radius == 0) {
-            std::cout << "Radius cannot be zero. Setting to 1.\n";
-            radius = 1;
+private:
+    std::array<std::unique_ptr<Point<T>>, 8> points;
+
+    void calculatePoints(const Point<T>& center, const Point<T>& vertex) {
+        T dx = vertex.x() - center.x();
+        T dy = vertex.y() - center.y();
+
+        T radius = std::hypot(dx, dy);
+        if (!radius) {
+            std::cout << "Center and vertex coincide. Resetting to unit octagon.\n";
+            return calculatePoints(Point<T>(0, 0), Point<T>(1, 0));
         }
 
-        for (int i = 0; i < 8; ++i) {
-            T angle = static_cast<T>(std::numbers::pi_v<T> / 4.0 * i);
+        T baseAngle = std::atan2(dy, dx);
+        for (size_t i = 0; i < 8; ++i) {
+            T angle = baseAngle + i * (std::numbers::pi_v<T> / 4);
             T x = center.x() + radius * std::cos(angle);
             T y = center.y() + radius * std::sin(angle);
             points[i] = std::make_unique<Point<T>>(x, y);
         }
     }
-
-private:
-    std::array<std::unique_ptr<Point<T>>, 8> points;
 };
