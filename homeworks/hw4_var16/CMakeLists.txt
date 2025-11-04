@@ -17,3 +17,31 @@ target_include_directories(HW4_VAR16 PRIVATE ${INCLUDE_DIR})
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(HW4_VAR16 PRIVATE -Wall -Wextra -Wpedantic)
 endif()
+
+
+# GoogleTest
+
+include(FetchContent)
+
+FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip
+)
+
+set(INSTALL_GTEST OFF CACHE BOOL "Disable installation of googletest" FORCE)
+
+FetchContent_MakeAvailable(googletest)
+
+enable_testing()
+
+add_executable(gtests tests.cpp)
+target_include_directories(gtests PRIVATE ${INCLUDE_DIR})
+
+target_link_libraries(gtests PRIVATE GTest::gtest_main)
+
+include(GoogleTest)
+gtest_discover_tests(gtests)
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(gtests PRIVATE -Wall -Wextra -Wpedantic)
+endif()
