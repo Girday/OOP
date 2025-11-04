@@ -70,11 +70,7 @@ private:
 
         if (dx == 0 && dy == 0) {
             std::cout << "Points are identical, resetting to unit square.\n";
-            points[0] = std::make_unique<Point<T>>(0, 0);
-            points[1] = std::make_unique<Point<T>>(1, 0);
-            points[2] = std::make_unique<Point<T>>(1, 1);
-            points[3] = std::make_unique<Point<T>>(0, 1);
-            return;
+            return calculatePoints(Point<T>(0,0), Point<T>(1,0));
         }
 
         points[0] = std::make_unique<Point<T>>(A);

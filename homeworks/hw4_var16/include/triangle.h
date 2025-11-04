@@ -74,8 +74,7 @@ private:
     void calculatePoints(const Point<T>& A, const Point<T>& B, T h) {
         if (h <= 0) {
             std::cout << "Height must be positive, resetting to unit triangle.\n";
-            unitTriangle();
-            return;
+            return calculatePoints(Point<T>(0,0), Point<T>(1,0), 1);
         }
         
         T dx = B.x() - A.x();
@@ -84,8 +83,7 @@ private:
 
         if (!length) {
             std::cout << "Points are identical, resetting to unit triangle.\n";
-            unitTriangle();
-            return;
+            return calculatePoints(Point<T>(0,0), Point<T>(1,0), 1);
         }
 
         T nx = -dy / length;
@@ -97,11 +95,5 @@ private:
         points[0] = std::make_unique<Point<T>>(A);
         points[1] = std::make_unique<Point<T>>(B);
         points[2] = std::make_unique<Point<T>>(midX + nx * h, midY + ny * h);
-    }
-
-    void unitTriangle() {
-        points[0] = std::make_unique<Point<T>>(0, 0);
-        points[1] = std::make_unique<Point<T>>(1, 0);
-        points[2] = std::make_unique<Point<T>>(0.5, 1);
     }
 };
