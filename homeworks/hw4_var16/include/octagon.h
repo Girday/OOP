@@ -14,7 +14,7 @@ public:
             point = std::make_unique<Point<T>>();
     }
 
-    Octagon(const Point<T>& center, T vertex) {
+    Octagon(const Point<T>& center, const Point<T>& vertex) {
         calculatePoints(center, vertex);
     }
 
@@ -71,7 +71,7 @@ private:
 
         T radius = std::hypot(dx, dy);
         if (!radius) {
-            std::cout << "Center and vertex coincide. Resetting to unit octagon.\n";
+            std::cout << "Points are identical, resetting to unit octagon.\n";
             return calculatePoints(Point<T>(0, 0), Point<T>(1, 0));
         }
 
