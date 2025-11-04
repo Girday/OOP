@@ -57,7 +57,7 @@ public:
             throw std::out_of_range("Array is empty");
         
         for (size_t i = 0; i < size; ++i)
-            std::cout << *data[i] << " | Area: " << static_cast<double>(*data[i]) << "\n";  
+            std::cout << i << ": " << *data[i] << " | Area: " << static_cast<double>(*data[i]) << "\n";  
     }
 
     void printCenters() const {
