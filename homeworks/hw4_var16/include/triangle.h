@@ -16,6 +16,36 @@ public:
         calculatePoints(A, B, h);
     }
 
+    Triangle(const Triangle& other) {
+        for (int i = 0; i < 3; ++i)
+            points[i] = std::make_unique<Point<T>>(*other.points[i]);
+    }
+
+    Triangle& operator=(const Triangle& other) {
+        if (this == &other)
+            return *this;
+        
+        for (int i = 0; i < 3; ++i)
+            points[i] = std::make_unique<Point<T>>(*other.points[i]);
+        
+        return *this;
+    }
+
+    Triangle(Triangle&& other) noexcept {
+        for (int i = 0; i < 3; ++i)
+            points[i] = std::move(other.points[i]);
+    }
+
+    Triangle& operator=(Triangle&& other) noexcept {
+        if (this == &other)
+            return *this;
+        
+        for (int i = 0; i < 3; ++i)
+            points[i] = std::move(other.points[i]);
+        
+        return *this;
+    }
+
     Point<T> center() const override {
         T sumX{0}, sumY{0};
 

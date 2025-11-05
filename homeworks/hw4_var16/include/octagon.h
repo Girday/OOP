@@ -18,6 +18,36 @@ public:
         calculatePoints(center, vertex);
     }
 
+    Octagon(const Octagon& other) {
+        for (int i = 0; i < 8; ++i)
+            points[i] = std::make_unique<Point<T>>(*other.points[i]);
+    }
+
+    Octagon& operator=(const Octagon& other) {
+        if (this == &other)
+            return *this;
+        
+        for (int i = 0; i < 8; ++i)
+            points[i] = std::make_unique<Point<T>>(*other.points[i]);
+        
+        return *this;
+    }
+
+    Octagon(Octagon&& other) noexcept {
+        for (int i = 0; i < 8; ++i)
+            points[i] = std::move(other.points[i]);
+    }
+
+    Octagon& operator=(Octagon&& other) noexcept {
+        if (this == &other)
+            return *this;
+        
+        for (int i = 0; i < 8; ++i)
+            points[i] = std::move(other.points[i]);
+        
+        return *this;
+    }
+
     Point<T> center() const override {
         T sumX{0}, sumY{0};
 

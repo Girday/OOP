@@ -9,6 +9,8 @@
 #include "octagon.h"
 
 #include <climits>
+#include <iostream>
+#include <memory>
 
 void cinClear() {
     std::cin.clear();
@@ -18,14 +20,11 @@ void cinClear() {
 template <typename T>
 T readNumer(const std::string& prompt) {
     T value;
-
     std::cout << prompt;
-    
     if (std::cin >> value) {
         cinClear();
         return value;
     }
-
     cinClear();
     return -1;
 }
@@ -39,7 +38,41 @@ double readDouble(const std::string& prompt) {
 }
 
 int main() {
-    Array<Figure<double>> figures;
+    std::cout << "=== TK verification: array template with base and successor ===\n";
+
+    // ======================================================================
+    // 1. Полиморфный контейнер (через базовый тип)
+    // ======================================================================
+    Array<std::shared_ptr<Figure<double>>> baseFigures;
+
+    baseFigures.add(std::make_shared<Square<double>>(Point<double>(0, 0), Point<double>(2, 0)));
+    baseFigures.add(std::make_shared<Triangle<double>>(Point<double>(0, 0), Point<double>(1, 0), 1.0));
+    baseFigures.add(std::make_shared<Octagon<double>>(Point<double>(0, 0), Point<double>(1, 0)));
+
+    std::cout << "\nBase container (Array<std::shared_ptr<Figure<double>>>):\n";
+    baseFigures.printAll();
+    baseFigures.printCenters();
+    baseFigures.printTotalArea();
+
+    // ======================================================================
+    // 2. Контейнер наследников (Array<Square<double>>)
+    // ======================================================================
+    Array<Square<double>> squares;
+
+    squares.add(Square<double>(Point<double>(0, 0), Point<double>(2, 0)));
+    squares.add(Square<double>(Point<double>(0, 0), Point<double>(1, 0)));
+
+    std::cout << "\nThe Legacy Container (Array<Square<double>>):\n";
+    squares.printAll();
+    squares.printCenters();
+    squares.printTotalArea();
+
+    // ======================================================================
+    // 3. Основное меню пользователя (интерактив)
+    // ======================================================================
+    std::cout << "\n\n=== Switching to interactive mode ===\n";
+
+    Array<std::shared_ptr<Figure<double>>> figures; // исправлено: теперь хранит указатели
 
     while (true) {
         std::cout << "\nMenu:\n"
@@ -50,7 +83,7 @@ int main() {
                   << "5. Total Area\n"
                   << "0. Exit\n"
                   << "-> ";
-        
+
         int choice = readInt("");
 
         switch (choice) {
@@ -67,22 +100,20 @@ int main() {
 
                 int figureType = readInt("");
 
-                switch(figureType) {
-                    case 1: { // Square
+                switch (figureType) {
+                    case 1: {
                         auto sq = std::make_shared<Square<double>>();
                         std::cin >> *sq;
                         figures.add(sq);
                         break;
                     }
-
-                    case 2: { // Triangle
+                    case 2: {
                         auto tri = std::make_shared<Triangle<double>>();
                         std::cin >> *tri;
                         figures.add(tri);
                         break;
                     }
-
-                    case 3: { // Octagon
+                    case 3: {
                         auto oct = std::make_shared<Octagon<double>>();
                         std::cin >> *oct;
                         figures.add(oct);
@@ -117,7 +148,7 @@ int main() {
                     std::cout << e.what() << "\n";
                 }
                 break;
-            
+
             case 4:
                 try {
                     figures.printCenters();
@@ -125,7 +156,7 @@ int main() {
                     std::cout << e.what() << "\n";
                 }
                 break;
-            
+
             case 5:
                 try {
                     figures.printTotalArea();
@@ -133,12 +164,12 @@ int main() {
                     std::cout << e.what() << "\n";
                 }
                 break;
-            
+
             default:
                 std::cout << "Invalid choice. Try a number between 0 and 5.\n";
                 break;
         }
     }
-    
+
     return 0;
 }
