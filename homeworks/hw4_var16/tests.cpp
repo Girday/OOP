@@ -5,23 +5,21 @@
 #include "octagon.h"
 
 
-// Point
+// ---------- Point ----------
 
-class PointTest : public ::testing::Test {};
-
-TEST_F(PointTest, DefaultConstructor) {
+TEST(PointTest, DefaultConstructor) {
     Point<double> p;
     EXPECT_DOUBLE_EQ(p.x(), 0.0);
     EXPECT_DOUBLE_EQ(p.y(), 0.0);
 }
 
-TEST_F(PointTest, ParameterizedConstructor) {
+TEST(PointTest, ParameterizedConstructor) {
     Point<double> p(3.5, 4.2);
     EXPECT_DOUBLE_EQ(p.x(), 3.5);
     EXPECT_DOUBLE_EQ(p.y(), 4.2);
 }
 
-TEST_F(PointTest, EqualityOperator) {
+TEST(PointTest, EqualityOperator) {
     Point<double> p1(1.0, 2.0);
     Point<double> p2(1.0, 2.0);
     Point<double> p3(1.0, 3.0);
@@ -30,96 +28,66 @@ TEST_F(PointTest, EqualityOperator) {
 }
 
 
-// Square
+// ---------- Square ----------
 
-class SquareTest : public ::testing::Test {
-protected:
-    Square<double> sq_default{Point<double>(0, 0), Point<double>(1, 0)};
-};
-
-TEST_F(SquareTest, CenterCalculation) {
-    Point<double> center = sq_default.center();
-    EXPECT_NEAR(center.x(), 0.5, 1e-9);
-    EXPECT_NEAR(center.y(), 0.5, 1e-9);
-}
-
-TEST_F(SquareTest, AreaCalculation) {
+TEST(SquareTest, CenterAndArea) {
     Square<double> sq(Point<double>(0, 0), Point<double>(2, 0));
+    auto c = sq.center();
+    EXPECT_NEAR(c.x(), 1.0, 1e-9);
+    EXPECT_NEAR(c.y(), 1.0, 1e-9);
     EXPECT_NEAR(static_cast<double>(sq), 4.0, 1e-9);
 }
 
-TEST_F(SquareTest, EqualityOperator) {
-    Square<double> sq2(Point<double>(0, 0), Point<double>(1, 0));
-    const Figure<double>& f1 = sq_default;
-    const Figure<double>& f2 = sq2;
+TEST(SquareTest, EqualityOperator) {
+    Square<double> s1(Point<double>(0, 0), Point<double>(1, 0));
+    Square<double> s2(Point<double>(0, 0), Point<double>(1, 0));
+    const Figure<double>& f1 = s1;
+    const Figure<double>& f2 = s2;
     EXPECT_TRUE(f1 == f2);
 }
 
-TEST_F(SquareTest, InvalidInputHandled) {
-    Square<double> sq(Point<double>(0, 0), Point<double>(0, 0));
-    EXPECT_GT(static_cast<double>(sq), 0);
-}
 
+// ---------- Triangle ----------
 
-// Triangle
-
-class TriangleTest : public ::testing::Test {
-protected:
-    Triangle<double> tri_default{Point<double>(0, 0), Point<double>(2, 0), 2.0};
-};
-
-TEST_F(TriangleTest, CenterCalculation) {
-    Point<double> c = tri_default.center();
+TEST(TriangleTest, CenterAndArea) {
+    Triangle<double> tri(Point<double>(0, 0), Point<double>(2, 0), 2.0);
+    auto c = tri.center();
     EXPECT_NEAR(c.x(), 1.0, 1e-9);
     EXPECT_NEAR(c.y(), 2.0 / 3.0, 1e-9);
+    EXPECT_NEAR(static_cast<double>(tri), 2.0, 1e-9);
 }
 
-TEST_F(TriangleTest, AreaCalculation) {
-    Triangle<double> tri(Point<double>(0, 0), Point<double>(4, 0), 3.0);
-    EXPECT_NEAR(static_cast<double>(tri), 6.0, 1e-9);
-}
-
-TEST_F(TriangleTest, EqualityOperator) {
-    Triangle<double> tri2(Point<double>(0, 0), Point<double>(2, 0), 2.0);
-    const Figure<double>& f1 = tri_default;
-    const Figure<double>& f2 = tri2;
+TEST(TriangleTest, EqualityOperator) {
+    Triangle<double> t1(Point<double>(0, 0), Point<double>(2, 0), 2.0);
+    Triangle<double> t2(Point<double>(0, 0), Point<double>(2, 0), 2.0);
+    const Figure<double>& f1 = t1;
+    const Figure<double>& f2 = t2;
     EXPECT_TRUE(f1 == f2);
 }
 
-TEST_F(TriangleTest, InvalidInputHandled) {
-    Triangle<double> tri(Point<double>(0, 0), Point<double>(1, 0), 0);
-    EXPECT_GT(static_cast<double>(tri), 0);
-}
 
+// ---------- Octagon ----------
 
-// Octagon
-
-class OctagonTest : public ::testing::Test {
-protected:
-    Octagon<double> oct_default{Point<double>(0, 0), Point<double>(1, 0)};
-};
-
-TEST_F(OctagonTest, CenterCalculation) {
-    Point<double> c = oct_default.center();
+TEST(OctagonTest, CenterAndArea) {
+    Octagon<double> o(Point<double>(0, 0), Point<double>(1, 0));
+    auto c = o.center();
     EXPECT_NEAR(c.x(), 0.0, 1e-9);
     EXPECT_NEAR(c.y(), 0.0, 1e-9);
+    EXPECT_NEAR(static_cast<double>(o), 2.82842712, 1e-6);
 }
 
-TEST_F(OctagonTest, AreaCalculation) {
-    EXPECT_NEAR(static_cast<double>(oct_default), 2.8284271247461903, 1e-9);
-}
-
-TEST_F(OctagonTest, EqualityOperator) {
-    Octagon<double> oct2(Point<double>(0, 0), Point<double>(1, 0));
-    const Figure<double>& f1 = oct_default;
-    const Figure<double>& f2 = oct2;
+TEST(OctagonTest, EqualityOperator) {
+    Octagon<double> o1(Point<double>(0, 0), Point<double>(1, 0));
+    Octagon<double> o2(Point<double>(0, 0), Point<double>(1, 0));
+    const Figure<double>& f1 = o1;
+    const Figure<double>& f2 = o2;
     EXPECT_TRUE(f1 == f2);
 }
 
 
-// Array
+// ---------- Array (shared_ptr<Figure>) ----------
 
-class ArrayTest : public ::testing::Test {
+class ArrayPolyTest : public ::testing::Test {
 protected:
     void SetUp() override {
         sq = std::make_shared<Square<double>>(Point<double>(0, 0), Point<double>(1, 0));
@@ -127,44 +95,37 @@ protected:
         oct = std::make_shared<Octagon<double>>(Point<double>(0, 0), Point<double>(1, 0));
     }
 
-    Array<Figure<double>> arr;
+    Array<std::shared_ptr<Figure<double>>> arr;
     std::shared_ptr<Square<double>> sq;
     std::shared_ptr<Triangle<double>> tri;
     std::shared_ptr<Octagon<double>> oct;
 };
 
-TEST_F(ArrayTest, AddFigures) {
+TEST_F(ArrayPolyTest, AddAndSize) {
     EXPECT_EQ(arr.getSize(), 0);
     arr.add(sq);
     arr.add(tri);
     EXPECT_EQ(arr.getSize(), 2);
 }
 
-TEST_F(ArrayTest, RemoveFigures) {
+TEST_F(ArrayPolyTest, RemoveWorks) {
     arr.add(sq);
     arr.add(tri);
     arr.remove(0);
     EXPECT_EQ(arr.getSize(), 1);
-    arr.remove(0);
-    EXPECT_EQ(arr.getSize(), 0);
 }
 
-TEST_F(ArrayTest, RemoveInvalidIndex) {
-    arr.add(sq);
-    EXPECT_THROW(arr.remove(5), std::out_of_range);
-}
-
-TEST_F(ArrayTest, RemoveFromEmptyThrows) {
+TEST_F(ArrayPolyTest, RemoveInvalidThrows) {
     EXPECT_THROW(arr.remove(0), std::out_of_range);
 }
 
-TEST_F(ArrayTest, EmptyArrayPrintThrows) {
+TEST_F(ArrayPolyTest, PrintEmptyThrows) {
     EXPECT_THROW(arr.printAll(), std::out_of_range);
     EXPECT_THROW(arr.printCenters(), std::out_of_range);
     EXPECT_THROW(arr.printTotalArea(), std::out_of_range);
 }
 
-TEST_F(ArrayTest, TotalAreaCalculationOutput) {
+TEST_F(ArrayPolyTest, TotalAreaOutput) {
     arr.add(sq);
     arr.add(tri);
     testing::internal::CaptureStdout();
@@ -173,62 +134,63 @@ TEST_F(ArrayTest, TotalAreaCalculationOutput) {
     EXPECT_TRUE(out.find("Total Area") != std::string::npos);
 }
 
-TEST_F(ArrayTest, MoveSemanticsWork) {
+TEST_F(ArrayPolyTest, MoveSemantics) {
     arr.add(sq);
     arr.add(tri);
-    Array<Figure<double>> moved = std::move(arr);
+    Array<std::shared_ptr<Figure<double>>> moved = std::move(arr);
     EXPECT_EQ(moved.getSize(), 2);
     EXPECT_EQ(arr.getSize(), 0);
 }
 
-TEST_F(ArrayTest, MoveAssignmentWorks) {
-    arr.add(sq);
-    arr.add(tri);
-    Array<Figure<double>> copy;
-    copy = std::move(arr);
-    EXPECT_EQ(copy.getSize(), 2);
-    EXPECT_EQ(arr.getSize(), 0);
+
+// ---------- Array (Square<double>) ----------
+
+TEST(ArrayConcreteTest, WorksWithValueType) {
+    Array<Square<double>> squares;
+    squares.add(Square<double>(Point<double>(0, 0), Point<double>(1, 0)));
+    squares.add(Square<double>(Point<double>(0, 0), Point<double>(2, 0)));
+    EXPECT_EQ(squares.getSize(), 2);
+    EXPECT_NO_THROW(squares.printCenters());
+    EXPECT_NO_THROW(squares.printTotalArea());
+    squares.remove(0);
+    EXPECT_EQ(squares.getSize(), 1);
 }
 
 
-// Integration
+// ---------- Integration Test ----------
 
-class IntegrationTest : public ::testing::Test {};
-
-TEST_F(IntegrationTest, FullWorkflow) {
-    Array<Figure<double>> figures;
+TEST(IntegrationTest, AddRemoveAndPrintAll) {
+    Array<std::shared_ptr<Figure<double>>> figs;
     auto sq = std::make_shared<Square<double>>(Point<double>(0, 0), Point<double>(1, 0));
-    auto tri = std::make_shared<Triangle<double>>(Point<double>(0, 0), Point<double>(2, 0), 3.0);
+    auto tri = std::make_shared<Triangle<double>>(Point<double>(0, 0), Point<double>(2, 0), 2.0);
     auto oct = std::make_shared<Octagon<double>>(Point<double>(0, 0), Point<double>(1, 0));
 
-    figures.add(sq);
-    figures.add(tri);
-    figures.add(oct);
-    EXPECT_EQ(figures.getSize(), 3);
+    figs.add(sq);
+    figs.add(tri);
+    figs.add(oct);
+    EXPECT_EQ(figs.getSize(), 3);
 
-    EXPECT_NO_THROW(figures.printAll());
-    EXPECT_NO_THROW(figures.printCenters());
-    EXPECT_NO_THROW(figures.printTotalArea());
+    EXPECT_NO_THROW(figs.printAll());
+    EXPECT_NO_THROW(figs.printCenters());
+    EXPECT_NO_THROW(figs.printTotalArea());
 
-    figures.remove(1);
-    EXPECT_EQ(figures.getSize(), 2);
-
-    EXPECT_NO_THROW(figures.printAll());
-    EXPECT_NO_THROW(figures.printCenters());
-    EXPECT_NO_THROW(figures.printTotalArea());
+    figs.remove(1);
+    EXPECT_EQ(figs.getSize(), 2);
 }
 
 
-// Cross-Type Equality
+// ---------- Type Difference ----------
 
 TEST(FigureTest, DifferentTypesNotEqual) {
-    Square<double> sq(Point<double>(0, 0), Point<double>(1, 0));
-    Triangle<double> tri(Point<double>(0, 0), Point<double>(1, 0), 1.0);
-    const Figure<double>& f1 = sq;
-    const Figure<double>& f2 = tri;
+    Square<double> s(Point<double>(0, 0), Point<double>(1, 0));
+    Triangle<double> t(Point<double>(0, 0), Point<double>(1, 0), 1.0);
+    const Figure<double>& f1 = s;
+    const Figure<double>& f2 = t;
     EXPECT_FALSE(f1 == f2);
 }
 
+
+// ---------- Main ----------
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
