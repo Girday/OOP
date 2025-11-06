@@ -37,12 +37,9 @@ double readDouble(const std::string& prompt) {
     return readNumer<double>(prompt);
 }
 
-int main() {
-    std::cout << "=== TK verification: array template with base and successor ===\n";
-
-    // ======================================================================
+int main() {    
     // 1. Полиморфный контейнер (через базовый тип)
-    // ======================================================================
+    
     Array<std::shared_ptr<Figure<double>>> baseFigures;
 
     baseFigures.add(std::make_shared<Square<double>>(Point<double>(0, 0), Point<double>(2, 0)));
@@ -51,12 +48,16 @@ int main() {
 
     std::cout << "\nBase container (Array<std::shared_ptr<Figure<double>>>):\n";
     baseFigures.printAll();
+
+    std::cout << "\nCenters:\n";
     baseFigures.printCenters();
+
+    std::cout << "\n";
     baseFigures.printTotalArea();
 
-    // ======================================================================
-    // 2. Контейнер наследников (Array<Square<double>>)
-    // ======================================================================
+
+    // 2. Контейнер наследников (Array<Square<double>>
+    
     Array<Square<double>> squares;
 
     squares.add(Square<double>(Point<double>(0, 0), Point<double>(2, 0)));
@@ -64,15 +65,19 @@ int main() {
 
     std::cout << "\nThe Legacy Container (Array<Square<double>>):\n";
     squares.printAll();
+
+    std::cout << "\nCenters:\n";
     squares.printCenters();
+
+    std::cout << "\n";
     squares.printTotalArea();
 
-    // ======================================================================
+    
     // 3. Основное меню пользователя (интерактив)
-    // ======================================================================
+    
     std::cout << "\n\n=== Switching to interactive mode ===\n";
 
-    Array<std::shared_ptr<Figure<double>>> figures; // исправлено: теперь хранит указатели
+    Array<std::shared_ptr<Figure<double>>> figures;
 
     while (true) {
         std::cout << "\nMenu:\n"
