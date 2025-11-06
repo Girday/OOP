@@ -56,7 +56,9 @@ int main() {
     
     Array<Square<double>> squares;
 
-    squares.add(Square<double>(Point<double>(0, 0), Point<double>(2, 0)));
+    auto sq = Square<double>(Point<double>(0, 0), Point<double>(2, 0));
+
+    squares.add(sq);
     squares.add(Square<double>(Point<double>(0, 0), Point<double>(1, 0)));
 
     std::cout << "\nThe Legacy Container (Array<Square<double>>):\n";

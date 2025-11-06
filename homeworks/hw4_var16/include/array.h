@@ -35,19 +35,6 @@ public:
         return *this;
     }
 
-    void add(std::shared_ptr<typename std::remove_pointer<T>::type> fig) {
-        if (size >= capacity) 
-            grow();
-        data[size++] = std::move(fig);
-    }
-
-    template <typename U = T>
-    std::enable_if_t<!std::is_pointer_v<U>> add(const U& fig) {
-        if (size >= capacity) 
-            grow();
-        data[size++] = fig;
-    }
-
     template <typename U = T>
     std::enable_if_t<!std::is_pointer_v<U>> add(U&& fig) {
         if (size >= capacity) 
