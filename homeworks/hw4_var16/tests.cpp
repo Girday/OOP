@@ -161,6 +161,7 @@ TEST(ArrayConcreteTest, WorksWithValueType) {
 
 TEST(IntegrationTest, AddRemoveAndPrintAll) {
     Array<std::shared_ptr<Figure<double>>> figs;
+
     auto sq = std::make_shared<Square<double>>(Point<double>(0, 0), Point<double>(1, 0));
     auto tri = std::make_shared<Triangle<double>>(Point<double>(0, 0), Point<double>(2, 0), 2.0);
     auto oct = std::make_shared<Octagon<double>>(Point<double>(0, 0), Point<double>(1, 0));
@@ -168,6 +169,7 @@ TEST(IntegrationTest, AddRemoveAndPrintAll) {
     figs.add(sq);
     figs.add(tri);
     figs.add(oct);
+    
     EXPECT_EQ(figs.getSize(), 3);
 
     EXPECT_NO_THROW(figs.printAll());
@@ -186,6 +188,56 @@ TEST(FigureTest, DifferentTypesNotEqual) {
     Triangle<double> t(Point<double>(0, 0), Point<double>(1, 0), 1.0);
     const Figure<double>& f1 = s;
     const Figure<double>& f2 = t;
+    EXPECT_FALSE(f1 == f2);
+}
+
+TEST(FigureTest, DifferentTypesNotEqual_SameArea) {
+    Square<double> sq(Point<double>(0,0), Point<double>(2,0));
+    Triangle<double> tri(Point<double>(0,0), Point<double>(4,0), 2);
+
+    const Figure<double>& f1 = sq;
+    const Figure<double>& f2 = tri;
+
+    EXPECT_FALSE(f1 == f2);
+}
+
+TEST(FigureTest, DifferentTypesNotEqual_SameCenters) {
+    Square<double> sq(Point<double>(0,0), Point<double>(2,0));
+    Octagon<double> oct(Point<double>(1,1), Point<double>(2,1));
+
+    const Figure<double>& f1 = sq;
+    const Figure<double>& f2 = oct;
+
+    EXPECT_FALSE(f1 == f2);
+}
+
+TEST(FigureTest, DegenerateFiguresStillNotEqual) {
+    Triangle<double> t1(Point<double>(0,0), Point<double>(0,0), 0);
+    Square<double> sq(Point<double>(0,0), Point<double>(0,0));
+
+    const Figure<double>& f1 = t1;
+    const Figure<double>& f2 = sq;
+
+    EXPECT_FALSE(f1 == f2); 
+}
+
+TEST(FigureTest, SameTypeEqualButDifferentParameters) {
+    Square<double> s1(Point<double>(0,0), Point<double>(1,0));
+    Square<double> s2(Point<double>(0,0), Point<double>(2,0));
+
+    const Figure<double>& f1 = s1;
+    const Figure<double>& f2 = s2;
+
+    EXPECT_FALSE(f1 == f2);
+}
+
+TEST(FigureTest, OctagonAndTriangleNeverEqual) {
+    Octagon<double> o(Point<double>(0,0), Point<double>(3,0));
+    Triangle<double> t(Point<double>(0,0), Point<double>(6,0), 3);
+
+    const Figure<double>& f1 = o;
+    const Figure<double>& f2 = t;
+
     EXPECT_FALSE(f1 == f2);
 }
 
