@@ -38,8 +38,6 @@ double readDouble(const std::string& prompt) {
 }
 
 int main() {    
-    // 1. Полиморфный контейнер (через базовый тип)
-    
     Array<std::shared_ptr<Figure<double>>> baseFigures;
 
     baseFigures.add(std::make_shared<Square<double>>(Point<double>(0, 0), Point<double>(2, 0)));
@@ -55,8 +53,6 @@ int main() {
     std::cout << "\n";
     baseFigures.printTotalArea();
 
-
-    // 2. Контейнер наследников (Array<Square<double>>
     
     Array<Square<double>> squares;
 
@@ -72,8 +68,6 @@ int main() {
     std::cout << "\n";
     squares.printTotalArea();
 
-    
-    // 3. Основное меню пользователя (интерактив)
     
     std::cout << "\n\n=== Switching to interactive mode ===\n";
 
