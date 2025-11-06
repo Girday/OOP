@@ -387,7 +387,7 @@ TEST(ArrayMixedTest, RemoveFromEmptyThrows) {
 }
 
 
-// ---------- Applied ----------
+// ---------- Applied / Integration Tests ----------
 
 TEST(IntegrationTest, AddRemoveAndPrintAll) {
     Array<std::shared_ptr<Figure<double>>> figs;
@@ -408,6 +408,298 @@ TEST(IntegrationTest, AddRemoveAndPrintAll) {
 
     figs.remove(1);
     EXPECT_EQ(figs.getSize(), 2);
+}
+
+TEST(IntegrationTest, ComplexScenarioWithMultipleOperations) {
+    Array<std::shared_ptr<Figure<double>>> figs;
+    
+    // Добавляем несколько фигур
+    figs.add(std::make_shared<Square<double>>(Point<double>(0, 0), Point<double>(2, 0)));
+    figs.add(std::make_shared<Triangle<double>>(Point<double>(0, 0), Point<double>(4, 0), 2.0));
+    figs.add(std::make_shared<Octagon<double>>(Point<double>(0, 0), Point<double>(1, 0)));
+    figs.add(std::make_shared<Square<double>>(Point<double>(5, 5), Point<double>(8, 5)));
+    
+    EXPECT_EQ(figs.getSize(), 4);
+    
+    // Удаляем элемент из середины
+    figs.remove(1);
+    EXPECT_EQ(figs.getSize(), 3);
+    
+    // Добавляем еще фигуры
+    figs.add(std::make_shared<Triangle<double>>(Point<double>(1, 1), Point<double>(3, 1), 1.5));
+    EXPECT_EQ(figs.getSize(), 4);
+    
+    // Проверяем, что все операции работают
+    EXPECT_NO_THROW(figs.printAll());
+    EXPECT_NO_THROW(figs.printCenters());
+    EXPECT_NO_THROW(figs.printTotalArea());
+    
+    // Удаляем первый элемент
+    figs.remove(0);
+    EXPECT_EQ(figs.getSize(), 3);
+}
+
+TEST(IntegrationTest, TotalAreaCalculationWithMixedFigures) {
+    Array<std::shared_ptr<Figure<double>>> figs;
+    
+    // Square: side = 2, area = 4
+    figs.add(std::make_shared<Square<double>>(Point<double>(0, 0), Point<double>(2, 0)));
+    
+    // Triangle: base = 4, height = 2, area = 4
+    figs.add(std::make_shared<Triangle<double>>(Point<double>(0, 0), Point<double>(4, 0), 2.0));
+    
+    // Total area should be 8
+    testing::internal::CaptureStdout();
+    figs.printTotalArea();
+    std::string output = testing::internal::GetCapturedStdout();
+    
+    EXPECT_TRUE(output.find("8") != std::string::npos);
+}
+
+TEST(IntegrationTest, RemoveAllElementsOneByOne) {
+    Array<std::shared_ptr<Figure<double>>> figs;
+    
+    figs.add(std::make_shared<Square<double>>(Point<double>(0, 0), Point<double>(1, 0)));
+    figs.add(std::make_shared<Triangle<double>>(Point<double>(0, 0), Point<double>(2, 0), 2.0));
+    figs.add(std::make_shared<Octagon<double>>(Point<double>(0, 0), Point<double>(1, 0)));
+    
+    EXPECT_EQ(figs.getSize(), 3);
+    
+    figs.remove(2);
+    EXPECT_EQ(figs.getSize(), 2);
+    
+    figs.remove(1);
+    EXPECT_EQ(figs.getSize(), 1);
+    
+    figs.remove(0);
+    EXPECT_EQ(figs.getSize(), 0);
+    
+    // После удаления всех элементов операции должны выбрасывать исключения
+    EXPECT_THROW(figs.printAll(), std::out_of_range);
+    EXPECT_THROW(figs.remove(0), std::out_of_range);
+}
+
+TEST(IntegrationTest, LargeCollectionOfFigures) {
+    Array<std::shared_ptr<Figure<double>>> figs;
+    
+    // Добавляем 20 фигур разных типов
+    for (int i = 0; i < 20; ++i) {
+        if (i % 3 == 0) {
+            figs.add(std::make_shared<Square<double>>(
+                Point<double>(i, 0), Point<double>(i + 1, 0)));
+        } else if (i % 3 == 1) {
+            figs.add(std::make_shared<Triangle<double>>(
+                Point<double>(i, 0), Point<double>(i + 2, 0), 1.0));
+        } else {
+            figs.add(std::make_shared<Octagon<double>>(
+                Point<double>(i, 0), Point<double>(i + 1, 0)));
+        }
+    }
+    
+    EXPECT_EQ(figs.getSize(), 20);
+    
+    // Удаляем каждый второй элемент
+    for (int i = 9; i >= 0; --i) {
+        figs.remove(i * 2);
+    }
+    
+    EXPECT_EQ(figs.getSize(), 10);
+    EXPECT_NO_THROW(figs.printAll());
+}
+
+TEST(IntegrationTest, AccessElementsAfterModifications) {
+    Array<std::shared_ptr<Figure<double>>> figs;
+    
+    auto sq1 = std::make_shared<Square<double>>(Point<double>(0, 0), Point<double>(1, 0));
+    auto tri = std::make_shared<Triangle<double>>(Point<double>(0, 0), Point<double>(2, 0), 2.0);
+    auto sq2 = std::make_shared<Square<double>>(Point<double>(0, 0), Point<double>(3, 0));
+    
+    figs.add(sq1);
+    figs.add(tri);
+    figs.add(sq2);
+    
+    // Проверяем доступ к элементам
+    EXPECT_NEAR(static_cast<double>(*figs[0]), 1.0, 1e-9);  // sq1: area = 1
+    EXPECT_NEAR(static_cast<double>(*figs[1]), 2.0, 1e-9);  // tri: area = 2
+    EXPECT_NEAR(static_cast<double>(*figs[2]), 9.0, 1e-9);  // sq2: area = 9
+    
+    // Удаляем средний элемент
+    figs.remove(1);
+    
+    // Проверяем, что элементы сдвинулись правильно
+    EXPECT_NEAR(static_cast<double>(*figs[0]), 1.0, 1e-9);  // sq1
+    EXPECT_NEAR(static_cast<double>(*figs[1]), 9.0, 1e-9);  // sq2
+}
+
+TEST(IntegrationTest, CentersCalculationForMixedFigures) {
+    Array<std::shared_ptr<Figure<double>>> figs;
+    
+    // Square с центром в (1, 1)
+    figs.add(std::make_shared<Square<double>>(Point<double>(0, 0), Point<double>(2, 0)));
+    
+    // Triangle с центром в (1, 2/3)
+    figs.add(std::make_shared<Triangle<double>>(Point<double>(0, 0), Point<double>(2, 0), 2.0));
+    
+    // Octagon с центром в (0, 0)
+    figs.add(std::make_shared<Octagon<double>>(Point<double>(0, 0), Point<double>(1, 0)));
+    
+    auto c1 = figs[0]->center();
+    EXPECT_NEAR(c1.x(), 1.0, 1e-9);
+    EXPECT_NEAR(c1.y(), 1.0, 1e-9);
+    
+    auto c2 = figs[1]->center();
+    EXPECT_NEAR(c2.x(), 1.0, 1e-9);
+    EXPECT_NEAR(c2.y(), 2.0/3.0, 1e-9);
+    
+    auto c3 = figs[2]->center();
+    EXPECT_NEAR(c3.x(), 0.0, 1e-9);
+    EXPECT_NEAR(c3.y(), 0.0, 1e-9);
+}
+
+TEST(IntegrationTest, MoveEntireArrayWithFigures) {
+    Array<std::shared_ptr<Figure<double>>> figs;
+    
+    figs.add(std::make_shared<Square<double>>(Point<double>(0, 0), Point<double>(1, 0)));
+    figs.add(std::make_shared<Triangle<double>>(Point<double>(0, 0), Point<double>(2, 0), 2.0));
+    figs.add(std::make_shared<Octagon<double>>(Point<double>(0, 0), Point<double>(1, 0)));
+    
+    EXPECT_EQ(figs.getSize(), 3);
+    
+    // Move constructor
+    Array<std::shared_ptr<Figure<double>>> moved(std::move(figs));
+    
+    EXPECT_EQ(moved.getSize(), 3);
+    EXPECT_EQ(figs.getSize(), 0);
+    
+    EXPECT_NO_THROW(moved.printAll());
+    EXPECT_THROW(figs.printAll(), std::out_of_range);
+}
+
+TEST(IntegrationTest, ComparisonBetweenDifferentFigures) {
+    auto sq = std::make_shared<Square<double>>(Point<double>(0, 0), Point<double>(2, 0));
+    auto tri = std::make_shared<Triangle<double>>(Point<double>(0, 0), Point<double>(4, 0), 2.0);
+    auto oct = std::make_shared<Octagon<double>>(Point<double>(0, 0), Point<double>(1, 0));
+    
+    // Разные типы фигур никогда не равны
+    EXPECT_FALSE(*sq == *tri);
+    EXPECT_FALSE(*sq == *oct);
+    EXPECT_FALSE(*tri == *oct);
+}
+
+TEST(IntegrationTest, SameFigureTypeButDifferentParameters) {
+    auto sq1 = std::make_shared<Square<double>>(Point<double>(0, 0), Point<double>(1, 0));
+    auto sq2 = std::make_shared<Square<double>>(Point<double>(0, 0), Point<double>(2, 0));
+    auto sq3 = std::make_shared<Square<double>>(Point<double>(0, 0), Point<double>(1, 0));
+    
+    EXPECT_FALSE(*sq1 == *sq2);  // Разные размеры
+    EXPECT_TRUE(*sq1 == *sq3);   // Одинаковые параметры
+}
+
+TEST(IntegrationTest, StressTestWithManyOperations) {
+    Array<std::shared_ptr<Figure<double>>> figs;
+    
+    // Добавляем 50 фигур
+    for (int i = 0; i < 50; ++i) {
+        figs.add(std::make_shared<Square<double>>(
+            Point<double>(i, 0), Point<double>(i + 1, 0)));
+    }
+    
+    EXPECT_EQ(figs.getSize(), 50);
+    
+    // Удаляем первые 25 фигур
+    for (int i = 0; i < 25; ++i) {
+        figs.remove(0);
+    }
+    
+    EXPECT_EQ(figs.getSize(), 25);
+    
+    // Добавляем еще 25 треугольников
+    for (int i = 0; i < 25; ++i) {
+        figs.add(std::make_shared<Triangle<double>>(
+            Point<double>(i, 0), Point<double>(i + 2, 0), 1.0));
+    }
+    
+    EXPECT_EQ(figs.getSize(), 50);
+    
+    // Проверяем, что все операции работают
+    EXPECT_NO_THROW(figs.printAll());
+    EXPECT_NO_THROW(figs.printCenters());
+    EXPECT_NO_THROW(figs.printTotalArea());
+}
+
+TEST(IntegrationTest, IndexAccessWithBoundaryChecks) {
+    Array<std::shared_ptr<Figure<double>>> figs;
+    
+    figs.add(std::make_shared<Square<double>>(Point<double>(0, 0), Point<double>(1, 0)));
+    figs.add(std::make_shared<Triangle<double>>(Point<double>(0, 0), Point<double>(2, 0), 2.0));
+    figs.add(std::make_shared<Octagon<double>>(Point<double>(0, 0), Point<double>(1, 0)));
+    
+    // Валидные индексы
+    EXPECT_NO_THROW(figs[0]);
+    EXPECT_NO_THROW(figs[1]);
+    EXPECT_NO_THROW(figs[2]);
+    
+    // Невалидные индексы
+    EXPECT_THROW(figs[3], std::out_of_range);
+    EXPECT_THROW(figs[100], std::out_of_range);
+    
+    // После удаления
+    figs.remove(1);
+    EXPECT_NO_THROW(figs[0]);
+    EXPECT_NO_THROW(figs[1]);
+    EXPECT_THROW(figs[2], std::out_of_range);
+}
+
+TEST(IntegrationTest, EmptyArrayOperations) {
+    Array<std::shared_ptr<Figure<double>>> figs;
+    
+    // Все операции на пустом массиве должны выбрасывать исключения
+    EXPECT_THROW(figs.printAll(), std::out_of_range);
+    EXPECT_THROW(figs.printCenters(), std::out_of_range);
+    EXPECT_THROW(figs.printTotalArea(), std::out_of_range);
+    EXPECT_THROW(figs.remove(0), std::out_of_range);
+    EXPECT_THROW(figs[0], std::out_of_range);
+    
+    EXPECT_EQ(figs.getSize(), 0);
+}
+
+TEST(IntegrationTest, MixedIntAndDoubleSquares) {
+    Array<Square<int>> intSquares;
+    Array<Square<double>> doubleSquares;
+    
+    intSquares.add(Square<int>(Point<int>(0, 0), Point<int>(5, 0)));
+    doubleSquares.add(Square<double>(Point<double>(0, 0), Point<double>(5.0, 0)));
+    
+    // Оба должны иметь площадь 25
+    EXPECT_NEAR(static_cast<double>(intSquares[0]), 25.0, 1e-9);
+    EXPECT_NEAR(static_cast<double>(doubleSquares[0]), 25.0, 1e-9);
+}
+
+TEST(IntegrationTest, RealWorldScenario) {
+    Array<std::shared_ptr<Figure<double>>> shapes;
+    
+    // Создаем "сцену" с разными фигурами
+    // Квадратное основание здания
+    shapes.add(std::make_shared<Square<double>>(Point<double>(0, 0), Point<double>(10, 0)));
+    
+    // Треугольная крыша
+    shapes.add(std::make_shared<Triangle<double>>(Point<double>(0, 10), Point<double>(10, 10), 5.0));
+    
+    // Восьмиугольное окно
+    shapes.add(std::make_shared<Octagon<double>>(Point<double>(5, 5), Point<double>(6, 5)));
+    
+    EXPECT_EQ(shapes.getSize(), 3);
+    
+    // Вычисляем общую площадь
+    testing::internal::CaptureStdout();
+    shapes.printTotalArea();
+    std::string output = testing::internal::GetCapturedStdout();
+    EXPECT_TRUE(output.find("Total Area") != std::string::npos);
+    
+    // Проверяем центры
+    auto buildingCenter = shapes[0]->center();
+    EXPECT_NEAR(buildingCenter.x(), 5.0, 1e-9);
+    EXPECT_NEAR(buildingCenter.y(), 5.0, 1e-9);
 }
 
 
