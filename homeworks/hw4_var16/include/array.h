@@ -36,24 +36,27 @@ public:
     }
 
     void add(std::shared_ptr<typename std::remove_pointer<T>::type> fig) {
-        if (size >= capacity) grow();
+        if (size >= capacity) 
+            grow();
         data[size++] = std::move(fig);
     }
 
-    template <class U = T>
+    template <typename U = T>
     std::enable_if_t<!std::is_pointer_v<U>> add(const U& fig) {
-        if (size >= capacity) grow();
+        if (size >= capacity) 
+            grow();
         data[size++] = fig;
     }
 
-    template <class U = T>
+    template <typename U = T>
     std::enable_if_t<!std::is_pointer_v<U>> add(U&& fig) {
-        if (size >= capacity) grow();
+        if (size >= capacity) 
+            grow();
         data[size++] = std::move(fig);
     }
 
     void remove(size_t index) {
-        if (size == 0)
+        if (!size)
             throw std::out_of_range("Array is empty");
         if (index >= size)
             throw std::out_of_range("Index out of range");
@@ -69,7 +72,8 @@ public:
     }
 
     void printAll() const {
-        if (size == 0) throw std::out_of_range("Array is empty");
+        if (!size) 
+            throw std::out_of_range("Array is empty");
 
         for (size_t i = 0; i < size; ++i) {
             if constexpr (requires { *data[i]; }) {
@@ -83,7 +87,8 @@ public:
     }
 
     void printCenters() const {
-        if (size == 0) throw std::out_of_range("Array is empty");
+        if (!size) 
+            throw std::out_of_range("Array is empty");
 
         for (size_t i = 0; i < size; ++i) {
             if constexpr (requires { data[i]->center(); }) {
@@ -97,7 +102,7 @@ public:
     }
 
     void printTotalArea() const {
-        if (size == 0) 
+        if (!size) 
             throw std::out_of_range("Array is empty");
         
         double totalArea = 0.0;
@@ -112,12 +117,14 @@ public:
     }
 
     T& operator[](size_t index) {
-        if (index >= size) throw std::out_of_range("Index out of range");
+        if (index >= size) 
+            throw std::out_of_range("Index out of range");
         return data[index];
     }
 
     const T& operator[](size_t index) const {
-        if (index >= size) throw std::out_of_range("Index out of range");
+        if (index >= size) 
+            throw std::out_of_range("Index out of range");
         return data[index];
     }
 
