@@ -145,19 +145,249 @@ TEST_F(ArrayPolyTest, MoveSemantics) {
 
 // ---------- Array (Square<double>) ----------
 
-TEST(ArrayConcreteTest, WorksWithValueType) {
+TEST(ArraySquareDoubleTest, DefaultConstruction) {
+    Array<Square<double>> squares;
+    EXPECT_EQ(squares.getSize(), 0);
+}
+
+TEST(ArraySquareDoubleTest, AddMultipleSquares) {
     Array<Square<double>> squares;
     squares.add(Square<double>(Point<double>(0, 0), Point<double>(1, 0)));
     squares.add(Square<double>(Point<double>(0, 0), Point<double>(2, 0)));
+    squares.add(Square<double>(Point<double>(1, 1), Point<double>(3, 1)));
+    EXPECT_EQ(squares.getSize(), 3);
+}
+
+TEST(ArraySquareDoubleTest, RemoveMiddleElement) {
+    Array<Square<double>> squares;
+    squares.add(Square<double>(Point<double>(0, 0), Point<double>(1, 0)));
+    squares.add(Square<double>(Point<double>(0, 0), Point<double>(2, 0)));
+    squares.add(Square<double>(Point<double>(0, 0), Point<double>(3, 0)));
+    
+    squares.remove(1);
     EXPECT_EQ(squares.getSize(), 2);
-    EXPECT_NO_THROW(squares.printCenters());
-    EXPECT_NO_THROW(squares.printTotalArea());
-    squares.remove(0);
+    
+    // Проверяем, что остались правильные элементы
+    EXPECT_NEAR(static_cast<double>(squares[0]), 1.0, 1e-9);
+    EXPECT_NEAR(static_cast<double>(squares[1]), 9.0, 1e-9);
+}
+
+TEST(ArraySquareDoubleTest, RemoveLastElement) {
+    Array<Square<double>> squares;
+    squares.add(Square<double>(Point<double>(0, 0), Point<double>(1, 0)));
+    squares.add(Square<double>(Point<double>(0, 0), Point<double>(2, 0)));
+    
+    squares.remove(1);
     EXPECT_EQ(squares.getSize(), 1);
+    EXPECT_NEAR(static_cast<double>(squares[0]), 1.0, 1e-9);
+}
+
+TEST(ArraySquareDoubleTest, IndexOperator) {
+    Array<Square<double>> squares;
+    squares.add(Square<double>(Point<double>(0, 0), Point<double>(1, 0)));
+    squares.add(Square<double>(Point<double>(0, 0), Point<double>(2, 0)));
+    
+    EXPECT_NEAR(static_cast<double>(squares[0]), 1.0, 1e-9);
+    EXPECT_NEAR(static_cast<double>(squares[1]), 4.0, 1e-9);
+}
+
+TEST(ArraySquareDoubleTest, IndexOutOfRange) {
+    Array<Square<double>> squares;
+    squares.add(Square<double>(Point<double>(0, 0), Point<double>(1, 0)));
+    
+    EXPECT_THROW(squares[5], std::out_of_range);
+}
+
+TEST(ArraySquareDoubleTest, PrintEmptyArrayThrows) {
+    Array<Square<double>> squares;
+    EXPECT_THROW(squares.printAll(), std::out_of_range);
+    EXPECT_THROW(squares.printCenters(), std::out_of_range);
+    EXPECT_THROW(squares.printTotalArea(), std::out_of_range);
+}
+
+TEST(ArraySquareDoubleTest, TotalAreaCalculation) {
+    Array<Square<double>> squares;
+    squares.add(Square<double>(Point<double>(0, 0), Point<double>(1, 0))); // area = 1
+    squares.add(Square<double>(Point<double>(0, 0), Point<double>(2, 0))); // area = 4
+    
+    testing::internal::CaptureStdout();
+    squares.printTotalArea();
+    std::string output = testing::internal::GetCapturedStdout();
+    
+    EXPECT_TRUE(output.find("5") != std::string::npos);
+}
+
+TEST(ArraySquareDoubleTest, MoveConstructor) {
+    Array<Square<double>> squares;
+    squares.add(Square<double>(Point<double>(0, 0), Point<double>(1, 0)));
+    squares.add(Square<double>(Point<double>(0, 0), Point<double>(2, 0)));
+    
+    Array<Square<double>> moved(std::move(squares));
+    EXPECT_EQ(moved.getSize(), 2);
+    EXPECT_EQ(squares.getSize(), 0);
+}
+
+TEST(ArraySquareDoubleTest, MoveAssignment) {
+    Array<Square<double>> squares;
+    squares.add(Square<double>(Point<double>(0, 0), Point<double>(1, 0)));
+    squares.add(Square<double>(Point<double>(0, 0), Point<double>(2, 0)));
+    
+    Array<Square<double>> moved;
+    moved = std::move(squares);
+    
+    EXPECT_EQ(moved.getSize(), 2);
+    EXPECT_EQ(squares.getSize(), 0);
 }
 
 
-// ---------- Integration Test ----------
+// ---------- Array (Square<int>) ----------
+
+TEST(ArraySquareIntTest, WorksWithIntType) {
+    Array<Square<int>> squares;
+    squares.add(Square<int>(Point<int>(0, 0), Point<int>(3, 0)));
+    squares.add(Square<int>(Point<int>(0, 0), Point<int>(4, 0)));
+    
+    EXPECT_EQ(squares.getSize(), 2);
+    EXPECT_NO_THROW(squares.printAll());
+    EXPECT_NO_THROW(squares.printCenters());
+}
+
+TEST(ArraySquareIntTest, IntegerArithmetic) {
+    Array<Square<int>> squares;
+    squares.add(Square<int>(Point<int>(0, 0), Point<int>(5, 0))); // area = 25
+    
+    testing::internal::CaptureStdout();
+    squares.printTotalArea();
+    std::string output = testing::internal::GetCapturedStdout();
+    
+    EXPECT_TRUE(output.find("25") != std::string::npos);
+}
+
+TEST(ArraySquareIntTest, RemoveAndSize) {
+    Array<Square<int>> squares;
+    squares.add(Square<int>(Point<int>(0, 0), Point<int>(1, 0)));
+    squares.add(Square<int>(Point<int>(0, 0), Point<int>(2, 0)));
+    squares.add(Square<int>(Point<int>(0, 0), Point<int>(3, 0)));
+    
+    squares.remove(1);
+    EXPECT_EQ(squares.getSize(), 2);
+}
+
+
+// ---------- Array (Triangle<double>) ----------
+
+TEST(ArrayTriangleDoubleTest, AddAndRemove) {
+    Array<Triangle<double>> triangles;
+    triangles.add(Triangle<double>(Point<double>(0, 0), Point<double>(2, 0), 2.0));
+    triangles.add(Triangle<double>(Point<double>(0, 0), Point<double>(3, 0), 3.0));
+    
+    EXPECT_EQ(triangles.getSize(), 2);
+    triangles.remove(0);
+    EXPECT_EQ(triangles.getSize(), 1);
+}
+
+TEST(ArrayTriangleDoubleTest, PrintOperations) {
+    Array<Triangle<double>> triangles;
+    triangles.add(Triangle<double>(Point<double>(0, 0), Point<double>(2, 0), 2.0));
+    
+    EXPECT_NO_THROW(triangles.printAll());
+    EXPECT_NO_THROW(triangles.printCenters());
+    EXPECT_NO_THROW(triangles.printTotalArea());
+}
+
+TEST(ArrayTriangleDoubleTest, TotalArea) {
+    Array<Triangle<double>> triangles;
+    triangles.add(Triangle<double>(Point<double>(0, 0), Point<double>(2, 0), 2.0)); // area = 2
+    triangles.add(Triangle<double>(Point<double>(0, 0), Point<double>(4, 0), 2.0)); // area = 4
+    
+    testing::internal::CaptureStdout();
+    triangles.printTotalArea();
+    std::string output = testing::internal::GetCapturedStdout();
+    
+    EXPECT_TRUE(output.find("6") != std::string::npos);
+}
+
+TEST(ArrayTriangleDoubleTest, MoveSemantics) {
+    Array<Triangle<double>> triangles;
+    triangles.add(Triangle<double>(Point<double>(0, 0), Point<double>(2, 0), 2.0));
+    
+    Array<Triangle<double>> moved = std::move(triangles);
+    EXPECT_EQ(moved.getSize(), 1);
+    EXPECT_EQ(triangles.getSize(), 0);
+}
+
+
+// ---------- Array (Triangle<int>) ----------
+
+TEST(ArrayTriangleIntTest, BasicOperations) {
+    Array<Triangle<int>> triangles;
+    triangles.add(Triangle<int>(Point<int>(0, 0), Point<int>(4, 0), 3));
+    triangles.add(Triangle<int>(Point<int>(0, 0), Point<int>(6, 0), 4));
+    
+    EXPECT_EQ(triangles.getSize(), 2);
+    EXPECT_NO_THROW(triangles.printAll());
+}
+
+
+// ---------- Array (Octagon<double>) ----------
+
+TEST(ArrayOctagonDoubleTest, AddMultipleOctagons) {
+    Array<Octagon<double>> octagons;
+    octagons.add(Octagon<double>(Point<double>(0, 0), Point<double>(1, 0)));
+    octagons.add(Octagon<double>(Point<double>(0, 0), Point<double>(2, 0)));
+    octagons.add(Octagon<double>(Point<double>(5, 5), Point<double>(6, 5)));
+    
+    EXPECT_EQ(octagons.getSize(), 3);
+}
+
+TEST(ArrayOctagonDoubleTest, RemoveAll) {
+    Array<Octagon<double>> octagons;
+    octagons.add(Octagon<double>(Point<double>(0, 0), Point<double>(1, 0)));
+    octagons.add(Octagon<double>(Point<double>(0, 0), Point<double>(2, 0)));
+    
+    octagons.remove(0);
+    octagons.remove(0);
+    
+    EXPECT_EQ(octagons.getSize(), 0);
+    EXPECT_THROW(octagons.printAll(), std::out_of_range);
+}
+
+TEST(ArrayOctagonDoubleTest, PrintOperations) {
+    Array<Octagon<double>> octagons;
+    octagons.add(Octagon<double>(Point<double>(0, 0), Point<double>(1, 0)));
+    
+    EXPECT_NO_THROW(octagons.printAll());
+    EXPECT_NO_THROW(octagons.printCenters());
+    EXPECT_NO_THROW(octagons.printTotalArea());
+}
+
+TEST(ArrayOctagonDoubleTest, IndexAccess) {
+    Array<Octagon<double>> octagons;
+    octagons.add(Octagon<double>(Point<double>(0, 0), Point<double>(1, 0)));
+    
+    EXPECT_NO_THROW(octagons[0]);
+    EXPECT_THROW(octagons[1], std::out_of_range);
+}
+
+
+// ---------- Mixed Type Tests ----------
+
+TEST(ArrayMixedTest, GrowthBehavior) {
+    Array<Square<double>> squares;
+    
+    for (int i = 1; i <= 50; ++i)
+        squares.add(Square<double>(Point<double>(0, 0), Point<double>(i, 0)));
+    
+    EXPECT_EQ(squares.getSize(), 50);
+}
+
+TEST(ArrayMixedTest, RemoveFromEmptyThrows) {
+    Array<Triangle<double>> triangles;
+    EXPECT_THROW(triangles.remove(0), std::out_of_range);
+}
+
+
+// ---------- Applied ----------
 
 TEST(IntegrationTest, AddRemoveAndPrintAll) {
     Array<std::shared_ptr<Figure<double>>> figs;
