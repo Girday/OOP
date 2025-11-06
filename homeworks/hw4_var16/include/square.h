@@ -64,7 +64,7 @@ public:
         return static_cast<double>(side * side);
     }
 
-    bool operator==(const Figure<T>& other) const override {
+    bool equals(const Figure<T>& other) const override {
         const auto* otherSquare = dynamic_cast<const Square<T>*>(&other);
         
         if (!otherSquare)

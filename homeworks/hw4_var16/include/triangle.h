@@ -70,7 +70,7 @@ public:
         return static_cast<double>(0.5 * base * height);
     }
 
-    bool operator==(const Figure<T>& other) const override {
+    bool equals(const Figure<T>& other) const override {
         const auto* otherTriangle = dynamic_cast<const Triangle<T>*>(&other);
         
         if (!otherTriangle)

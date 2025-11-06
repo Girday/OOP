@@ -65,7 +65,7 @@ public:
         return static_cast<double>(2 * (1 + std::sqrt(2)) * side * side);
     }
 
-    bool operator==(const Figure<T>& other) const override {
+    bool equals(const Figure<T>& other) const override {
         const auto* otherOctagon = dynamic_cast<const Octagon<T>*>(&other);
         
         if (!otherOctagon)
