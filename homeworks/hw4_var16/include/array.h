@@ -35,11 +35,11 @@ public:
         return *this;
     }
 
-    template <typename U = T>
-    std::enable_if_t<!std::is_pointer_v<U>> add(U&& fig) {
-        if (size >= capacity) 
+    template <typename U>
+    void add(U&& fig) {
+        if (size >= capacity)
             grow();
-        data[size++] = std::move(fig);
+        data[size++] = std::forward<U>(fig);
     }
 
     void remove(size_t index) {
