@@ -125,9 +125,9 @@ private:
         auto newData = std::make_shared<T[]>(capacity);
 
         for (size_t i = 0; i < size; ++i)
-            newData[i] = std::move(data[i]);
+            newData[i] = data[i];
 
-        data = std::move(newData);
+        data = newData;
     }
 
     std::shared_ptr<T[]> data;
