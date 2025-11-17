@@ -47,6 +47,9 @@ void* FixedBlockResource::do_allocate(size_t bytes, size_t alignment) {
 }
 
 void FixedBlockResource::do_deallocate(void* ptr, size_t bytes, size_t alignment) {
+    (void)bytes;
+    (void)alignment;
+    
     auto it = std::find_if(blocks.begin(), blocks.end(), [ptr](const BlockInfo& block) {
         return block.ptr == ptr;
     });
