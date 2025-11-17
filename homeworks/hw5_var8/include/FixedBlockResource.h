@@ -2,6 +2,9 @@
 
 #include <memory_resource>
 #include <vector>
+#include <cstdlib>
+#include <algorithm>
+#include <stdexcept>
 
 class FixedBlockResource : public std::pmr::memory_resource {
     public:
