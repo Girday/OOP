@@ -25,7 +25,23 @@ class ForwardList {
             head = nullptr;
         }
 
-        void push(const T& value) {
+        void push_back(const T& value) {
+            Node<T>* new_node = alloc.allocate(1);
+            alloc.construct(new_node, Node<T>{value, nullptr});
+
+            if (!head) {
+                head = new_node;
+                return;
+            }
+
+            Node<T>* curr = head;
+            while (curr->next)
+                curr = curr->next;
+            
+            curr->next = new_node;
+        }
+
+        void push_front(const T& value) {
             Node<T>* new_node = alloc.allocate(1);
             alloc.construct(new_node, Node<T>{value, head});
             head = new_node;
