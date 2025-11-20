@@ -50,14 +50,13 @@ void FixedBlockResource::do_deallocate(void* ptr, size_t bytes, size_t alignment
     (void)bytes;
     (void)alignment;
     
-    auto it = std::find_if(blocks.begin(), blocks.end(), [ptr](const BlockInfo& block) {
-        return block.ptr == ptr;
-    });
-    
-    if (it == blocks.end())
-        throw std::logic_error("An attempt to release an unallocated block.");
-    
-    it->free = true;
+    for (auto& block : blocks)
+        if (block.ptr == ptr) {
+            block.free = true;
+            return;
+        }
+
+    throw std::logic_error("Attempt to free unallocated block");
 }
 
 bool FixedBlockResource::do_is_equal(const memory_resource& other) const noexcept {
