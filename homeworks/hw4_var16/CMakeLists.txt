@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 project(HW4_VAR16
     VERSION 1.0.0
-    DESCRIPTION "Лабораторная работа №3: Основы метапрограммирования"
+    DESCRIPTION "Лабораторная работа №4: Основы метапрограммирования"
     LANGUAGES CXX
 )
 
