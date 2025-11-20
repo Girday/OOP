@@ -21,7 +21,7 @@ FixedBlockResource::~FixedBlockResource() {
 
         В деструкторе ты не должен пытаться освобождать 
         отдельные блоки через do_deallocate — это всё уже 
-        «подчищается» через delete[] buffer.
+        «подчищается» через std::free(buffer)
     */
 }
 
