@@ -62,3 +62,7 @@ void FixedBlockResource::do_deallocate(void* ptr, size_t bytes, size_t alignment
 bool FixedBlockResource::do_is_equal(const memory_resource& other) const noexcept {
     return this == &other;
 }
+
+size_t FixedBlockResource::used_blocks_count() const {
+    return blocks.size();
+}

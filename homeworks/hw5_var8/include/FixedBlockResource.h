@@ -10,6 +10,8 @@ class FixedBlockResource : public std::pmr::memory_resource {
     public:
         FixedBlockResource(size_t size);
         ~FixedBlockResource();
+
+        size_t used_blocks_count() const;
     
     protected:
         void* do_allocate(size_t bytes, size_t alignment) override;
@@ -26,5 +28,6 @@ class FixedBlockResource : public std::pmr::memory_resource {
         char* buffer;
         size_t buffer_size;
         size_t offset;
+        
         std::vector<BlockInfo> blocks;
 };
