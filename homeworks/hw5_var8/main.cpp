@@ -23,7 +23,7 @@ int main() {
 
     FixedBlockResource mem(2048);
 
-    
+
     std::cout << "=== ForwardList<int> ===\n";
 
     ForwardList<int> list(&mem);
@@ -68,7 +68,7 @@ int main() {
     for (int x : reused) 
         std::cout << x << " ";
     std::cout << "\n\n";
-ъ
+
 
     std::cout << "=== ForwardList<Person> ===\n";
 
