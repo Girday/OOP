@@ -30,6 +30,10 @@ class ListIterator {
             return current != other.current;
         }
 
+        bool operator==(const ListIterator& other) const {
+            return current == other.current;
+        }
+
     private:
         Node<T>* current = nullptr;
 };
