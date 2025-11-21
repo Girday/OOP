@@ -23,9 +23,7 @@ int main() {
 
     FixedBlockResource mem(2048);
 
-    // =============================================================
-    // 1. ТЕСТ НА ПРОСТЫХ ТИПАХ (int)
-    // =============================================================
+    
     std::cout << "=== ForwardList<int> ===\n";
 
     ForwardList<int> list(&mem);
@@ -45,7 +43,6 @@ int main() {
         std::cout << *it << " ";
     std::cout << "\n\n";
 
-    // Тест на повторное использование памяти
     std::cout << "Creating temporary list to test memory reuse...\n";
     {
         ForwardList<int> temp(&mem);
@@ -71,10 +68,8 @@ int main() {
     for (int x : reused) 
         std::cout << x << " ";
     std::cout << "\n\n";
+ъ
 
-    // =============================================================
-    // 2. ТЕСТ НА СЛОЖНОМ ТИПЕ (struct)
-    // =============================================================
     std::cout << "=== ForwardList<Person> ===\n";
 
     ForwardList<Person> people(&mem);

@@ -5,24 +5,11 @@ FixedBlockResource::FixedBlockResource(size_t size) : buffer_size(size), offset(
     
     if (!buffer)
         throw std::bad_alloc();
-    /*
-        В конструкторе не нужно выделять память под каждый блок заранее. 
-        Все блоки будут создаваться по мере allocate.
-    */
 }
 
 FixedBlockResource::~FixedBlockResource() {
     if (buffer)
         std::free(buffer);
-    /*
-        blocks — это std::vector<BlockInfo>. 
-        Его не нужно вручную очищать: при разрушении объекта 
-        vector уничтожается автоматически.
-
-        В деструкторе ты не должен пытаться освобождать 
-        отдельные блоки через do_deallocate — это всё уже 
-        «подчищается» через std::free(buffer)
-    */
 }
 
 void* FixedBlockResource::do_allocate(size_t bytes, size_t alignment) {
