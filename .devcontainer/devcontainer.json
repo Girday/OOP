@@ -1,6 +1,9 @@
 {
   "name": "C++ OOP Labs",
-  "image": "mcr.microsoft.com/devcontainers/cpp:latest",
+
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
 
   "remoteUser": "vscode",
 
