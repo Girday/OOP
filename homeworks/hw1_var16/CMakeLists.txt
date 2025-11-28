@@ -1,6 +1,6 @@
 # CMakeLists.txt
 
-cmake_minimum_required(VERSION 4.1.1 FATAL_ERROR) # минимальная версия CMake
+cmake_minimum_required(VERSION 3.31.6 FATAL_ERROR) # минимальная версия CMake
 
 project(HW1_VAR16) # название проекта
 set(CMAKE_CXX_STANDARD 17) # стандарт C++
