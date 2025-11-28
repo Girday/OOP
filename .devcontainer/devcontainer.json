@@ -1,0 +1,21 @@
+{
+  "name": "C++ OOP Labs",
+  "image": "mcr.microsoft.com/devcontainers/cpp:latest",
+
+  "remoteUser": "vscode",
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+      },
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools",
+        "twxs.cmake"
+      ]
+    }
+  },
+
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y gdb"
+}
