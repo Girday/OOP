@@ -31,7 +31,7 @@ bool Bandit::accept(std::shared_ptr<NPC> attacker) {
     return attacker->visit(std::dynamic_pointer_cast<Bandit>(shared_from_this()));
 }
 
-std::ostream& operator<<(std::ostream& os, Bandit& Bandit) {
-    os << "Bandit: " << Bandit.name << " " << *static_cast<NPC*>(&Bandit) << std::endl;
+std::ostream& operator<<(std::ostream& os, Bandit& bandit) {
+    os << "Bandit: " << bandit.name << " " << *static_cast<NPC*>(&bandit) << std::endl;
     return os;
 }

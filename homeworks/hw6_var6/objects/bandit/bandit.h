@@ -17,5 +17,5 @@ struct Bandit : public NPC {
 
     bool accept(std::shared_ptr<NPC> attacker) override;
 
-    friend std::ostream& operator<<(std::ostream& os, Bandit& Bandit);
+    friend std::ostream& operator<<(std::ostream& os, Bandit& bandit);
 };
