@@ -8,6 +8,7 @@
 #include <fstream>
 #include <set>
 #include <cmath>
+#include <vector>
 
 struct NPC;
 struct Bear;
