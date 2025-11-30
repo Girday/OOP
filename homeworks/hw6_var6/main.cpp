@@ -149,7 +149,7 @@ int main() {
     set_t array;
 
     std::cout << "Generating ..." << std::endl;
-    for (size_t i = 0; i < 100; ++i) {  // 10 for testing
+    for (size_t i = 0; i < 100; ++i) {
         NpcType type = static_cast<NpcType>(std::rand() % 3 + 1);
         std::string name;
         switch (type) {
