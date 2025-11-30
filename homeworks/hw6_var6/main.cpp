@@ -138,10 +138,8 @@ set_t fight(const set_t& array, size_t distance) {
         for (const auto& defender : array)
             if ((attacker != defender) && (attacker->is_close(defender, distance))) {
                 bool success = defender->accept(attacker);
-                if (success) {
-                    attacker->fight_notify(defender, true);  // Notify only on win
+                if (success)
                     dead_list.insert(defender);
-                }
             }
 
     return dead_list;
@@ -151,13 +149,14 @@ int main() {
     set_t array;
 
     std::cout << "Generating ..." << std::endl;
-    for (size_t i = 0; i < 10; ++i) {  // 10 for testing
+    for (size_t i = 0; i < 100; ++i) {  // 10 for testing
         NpcType type = static_cast<NpcType>(std::rand() % 3 + 1);
         std::string name;
         switch (type) {
         case BearType: name = "bear_"; break;
         case ElfType: name = "elf_"; break;
-        case BanditType: name = "Bandit_"; break;
+        case BanditType: name = "bandit_"; break;
+        case Unknown: name = "unknown_"; break;
         }
         name += std::to_string(i);
         array.insert(factory(type, name, std::rand() % 501, std::rand() % 501));

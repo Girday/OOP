@@ -12,12 +12,23 @@ void Elf::save(std::ostream& os) {
     NPC::save(os);
 }
 
-bool Elf::visit(Bear&) { return false; }
-bool Elf::visit(Elf&) { return false; }
-bool Elf::visit(Bandit&) { return true; }  // Elf kills Bandit
+bool Elf::visit(std::shared_ptr<Bear> other) { 
+    (void)other;
+    return false; 
+}
+
+bool Elf::visit(std::shared_ptr<Elf> other) { 
+    (void)other;
+    return false; 
+}
+
+bool Elf::visit(std::shared_ptr<Bandit> other) { 
+    fight_notify(std::static_pointer_cast<NPC>(other), true);
+    return true; 
+}
 
 bool Elf::accept(std::shared_ptr<NPC> attacker) {
-    return attacker->visit(*this);
+    return attacker->visit(std::dynamic_pointer_cast<Elf>(shared_from_this()));
 }
 
 std::ostream& operator<<(std::ostream& os, Elf& elf) {

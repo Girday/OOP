@@ -23,7 +23,8 @@ enum NpcType {
 };
 
 struct IFightObserver {
-    virtual void on_fight(const std::shared_ptr<NPC> attacker, const std::shared_ptr<NPC> defender, bool win) = 0;
+    virtual void on_fight(const std::shared_ptr<NPC> attacker, 
+                          const std::shared_ptr<NPC> defender, bool win) = 0;
 };
 
 struct NPC : public std::enable_shared_from_this<NPC> {
@@ -40,9 +41,9 @@ struct NPC : public std::enable_shared_from_this<NPC> {
     void fight_notify(const std::shared_ptr<NPC> defender, bool win);
     bool is_close(const std::shared_ptr<NPC>& other, size_t distance) const;
 
-    virtual bool visit(Bear&) = 0;
-    virtual bool visit(Elf&) = 0;
-    virtual bool visit(Bandit&) = 0;
+    virtual bool visit(std::shared_ptr<Bear> other) = 0;
+    virtual bool visit(std::shared_ptr<Elf> other) = 0;
+    virtual bool visit(std::shared_ptr<Bandit> other) = 0;
 
     virtual bool accept(std::shared_ptr<NPC> attacker) = 0;
 

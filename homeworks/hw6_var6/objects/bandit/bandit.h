@@ -1,6 +1,8 @@
 #pragma once
 
 #include "npc.h"
+#include "elf.h"
+#include "bear.h"
 
 struct Bandit : public NPC {
     Bandit(const std::string& name, int x, int y);
@@ -9,9 +11,9 @@ struct Bandit : public NPC {
     void print(std::ostream& os) override;
     void save(std::ostream& os) override;
 
-    bool visit(Bear& other) override;
-    bool visit(Elf& other) override;
-    bool visit(Bandit& other) override;
+    bool visit(std::shared_ptr<Bear> other) override;
+    bool visit(std::shared_ptr<Elf> other) override;
+    bool visit(std::shared_ptr<Bandit> other) override;
 
     bool accept(std::shared_ptr<NPC> attacker) override;
 
