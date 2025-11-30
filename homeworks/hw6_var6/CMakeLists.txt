@@ -24,6 +24,6 @@ target_include_directories(HW6_VAR6 PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/objects/elf
 )
 
-if (CMAKE_CXX_COMPLIER_ID STREQUAL "GNU")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(HW6_VAR6 PRIVATE -Wall -Wextra -Wpedantic -Werror)
 endif()
