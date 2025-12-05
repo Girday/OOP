@@ -1,4 +1,6 @@
 #include "elf.h"
+#include "bandit.h"
+#include "bear.h"
 
 Elf::Elf(const std::string& name, int x, int y) : NPC(ElfType, name, x, y) {}
 Elf::Elf(std::istream& is) : NPC(ElfType, is) {}

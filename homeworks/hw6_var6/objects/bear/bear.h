@@ -1,8 +1,6 @@
 #pragma once
 
 #include "npc.h"
-#include "bandit.h"
-#include "elf.h"
 
 struct Bear : public NPC {
     Bear(const std::string& name, int x, int y);

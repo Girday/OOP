@@ -15,7 +15,9 @@ void NPC::fight_notify(const std::shared_ptr<NPC> defender, bool win) {
 }
 
 bool NPC::is_close(const std::shared_ptr<NPC>& other, size_t distance) const {
-    return std::pow(x - other->x, 2) + std::pow(y - other->y, 2) <= std::pow(distance, 2);
+    int dx = x - other->x;
+    int dy = y - other->y;
+    return dx * dx + dy * dy <= (int)(distance * distance);
 }
 
 void NPC::save(std::ostream& os) {
