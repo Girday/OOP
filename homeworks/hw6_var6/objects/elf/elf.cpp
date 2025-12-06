@@ -14,13 +14,11 @@ void Elf::save(std::ostream& os) {
     NPC::save(os);
 }
 
-bool Elf::visit(std::shared_ptr<Bear> other) { 
-    (void)other;
+bool Elf::visit([[maybe_unused]] std::shared_ptr<Bear> other) { 
     return false; 
 }
 
-bool Elf::visit(std::shared_ptr<Elf> other) { 
-    (void)other;
+bool Elf::visit([[maybe_unused]] std::shared_ptr<Elf> other) { 
     return false; 
 }
 

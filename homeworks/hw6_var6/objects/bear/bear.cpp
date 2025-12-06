@@ -14,8 +14,7 @@ void Bear::save(std::ostream& os) {
     NPC::save(os);
 }
 
-bool Bear::visit(std::shared_ptr<Bear> other) { 
-    (void)other;
+bool Bear::visit([[maybe_unused]] std::shared_ptr<Bear> other) { 
     return false; 
 }
 
@@ -24,8 +23,7 @@ bool Bear::visit(std::shared_ptr<Elf> other) {
     return true; 
 }
 
-bool Bear::visit(std::shared_ptr<Bandit> other) { 
-    (void)other;
+bool Bear::visit([[maybe_unused]] std::shared_ptr<Bandit> other) { 
     return false; 
 }
 

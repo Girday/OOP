@@ -14,13 +14,11 @@ void Bandit::save(std::ostream& os) {
     NPC::save(os);
 }
 
-bool Bandit::visit(std::shared_ptr<Bear> other) { 
-    (void)other;
+bool Bandit::visit([[maybe_unused]] std::shared_ptr<Bear> other) { 
     return false; 
 }
 
-bool Bandit::visit(std::shared_ptr<Elf> other) { 
-    (void)other;
+bool Bandit::visit([[maybe_unused]] std::shared_ptr<Elf> other) { 
     return false; 
 }
 
