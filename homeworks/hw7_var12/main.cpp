@@ -200,7 +200,6 @@ void draw_map(const std::vector<std::shared_ptr<NPC>>& npcs) {
 }
 
 
-
 int main() {
     std::srand(static_cast<unsigned>(time(nullptr)));
 

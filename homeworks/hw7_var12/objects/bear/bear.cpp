@@ -22,7 +22,7 @@ bool Bear::visit(std::shared_ptr<Elf> other) {
     int attack = std::rand() % 6 + 1;
     int defense = std::rand() % 6 + 1;
 
-    if (attack >= defense) {
+    if (attack > defense) {
         fight_notify(std::static_pointer_cast<NPC>(other), true);
         return true;
     }

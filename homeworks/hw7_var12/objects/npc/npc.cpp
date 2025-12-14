@@ -32,10 +32,8 @@ void NPC::move(int shift_x, int shift_y, int max_x, int max_y) {
     int new_x = x + shift_x;
     int new_y = y + shift_y;
 
-    if (new_x >= 0 && new_x <= max_x)
-        x = new_x;
-    if (new_y >= 0 && new_y <= max_y)
-        y = new_y;
+    x = std::clamp(new_x, 0, max_x);
+    y = std::clamp(new_y, 0, max_y);
 }
 
 bool NPC::is_alive() const {

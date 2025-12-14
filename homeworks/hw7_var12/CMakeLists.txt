@@ -35,39 +35,41 @@ endif()
 
 # GoogleTest
 
-# include(FetchContent)
+include(FetchContent)
 
-# FetchContent_Declare(
-#     googletest
-#     URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip
-# )
+FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip
+)
 
-# set(INSTALL_GTEST OFF CACHE BOOL "Disable installation of googletest" FORCE)
+set(INSTALL_GTEST OFF CACHE BOOL "Disable installation of googletest" FORCE)
 
-# FetchContent_MakeAvailable(googletest)
+FetchContent_MakeAvailable(googletest)
 
-# enable_testing()
+enable_testing()
 
-# add_executable(gtests 
-#     tests.cpp
-#     objects/npc/npc.cpp
-#     objects/bandit/bandit.cpp
-#     objects/bear/bear.cpp
-#     objects/elf/elf.cpp
-# )
+add_executable(gtests 
+    tests.cpp
+    objects/npc/npc.cpp
+    objects/bandit/bandit.cpp
+    objects/bear/bear.cpp
+    objects/elf/elf.cpp
+)
 
-# target_include_directories(gtests PRIVATE 
-#     ${CMAKE_CURRENT_SOURCE_DIR}/objects/npc
-#     ${CMAKE_CURRENT_SOURCE_DIR}/objects/bandit
-#     ${CMAKE_CURRENT_SOURCE_DIR}/objects/bear
-#     ${CMAKE_CURRENT_SOURCE_DIR}/objects/elf
-# )
+target_include_directories(gtests PRIVATE 
+    ${CMAKE_CURRENT_SOURCE_DIR}/objects/npc
+    ${CMAKE_CURRENT_SOURCE_DIR}/objects/bandit
+    ${CMAKE_CURRENT_SOURCE_DIR}/objects/bear
+    ${CMAKE_CURRENT_SOURCE_DIR}/objects/elf
+)
 
-# target_link_libraries(gtests PRIVATE GTest::gtest_main)
+target_link_libraries(gtests PRIVATE GTest::gtest_main)
+target_link_libraries(gtests PRIVATE Threads::Threads)
 
-# include(GoogleTest)
-# gtest_discover_tests(gtests)
 
-# if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-#     target_compile_options(gtests PRIVATE -Wall -Wextra -Wpedantic)
-# endif()
+include(GoogleTest)
+gtest_discover_tests(gtests)
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(gtests PRIVATE -Wall -Wextra -Wpedantic)
+endif()

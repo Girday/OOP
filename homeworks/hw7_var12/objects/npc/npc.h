@@ -9,6 +9,7 @@
 #include <set>
 #include <cmath>
 #include <vector>
+#include <algorithm>
 #include <mutex>
 
 struct NPC;

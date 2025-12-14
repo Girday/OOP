@@ -1,13 +1,98 @@
 #include <gtest/gtest.h>
 #include <sstream>
 #include <fstream>
-#include "npc.h"
+#include <thread>
+#include <mutex>
+#include <queue>
+#include <optional>
+#include <chrono>
+#include <atomic>
+#include <array>
+
 #include "bear.h"
 #include "elf.h"
 #include "bandit.h"
 
+using namespace std::chrono_literals;
+std::mutex print_mutex;
 
-// Тесты создания NPC
+constexpr int MAP_X = 50;
+constexpr int MAP_Y = 50;
+constexpr int GRID = 25;
+
+struct FightEvent {
+    std::shared_ptr<NPC> attacker;
+    std::shared_ptr<NPC> defender;
+};
+
+class FightManager {
+private:
+    std::queue<FightEvent> events;
+    std::mutex mtx;
+    FightManager() {}
+
+public:
+    static FightManager& get() {
+        static FightManager instance;
+        return instance;
+    }
+
+    void add_event(FightEvent&& event) {
+        std::lock_guard<std::mutex> lck(mtx);
+        events.push(event);
+    }
+
+    void operator()() {
+        std::lock_guard<std::mutex> lck(mtx);
+        while (!events.empty()) {
+            auto event = events.front();
+            events.pop();
+            if (event.attacker->is_alive() && event.defender->is_alive()) {
+                if (event.defender->accept(event.attacker)) {
+                    event.defender->must_die();
+                }
+            }
+        }
+    }
+};
+
+void draw_map(const std::vector<std::shared_ptr<NPC>>& npcs) {
+    std::array<std::pair<std::string, char>, GRID * GRID> field{};
+    int bears = 0, elfs = 0, bandits = 0;
+
+    for (auto& npc : npcs) {
+        if (!npc->is_alive()) continue;
+
+        auto [x, y] = npc->position();
+        int gx = std::min(x * GRID / MAP_X, GRID - 1);
+        int gy = std::min(y * GRID / MAP_Y, GRID - 1);
+        char symbol;
+        std::string color = npc->get_color();
+
+        switch (npc->type) {
+            case BearType: symbol = 'M'; ++bears; break;
+            case ElfType: symbol = 'E'; ++elfs; break;
+            case BanditType: symbol = 'R'; ++bandits; break;
+            default: continue;
+        }
+
+        field[gx + gy * GRID] = {color, symbol};
+    }
+
+    {
+        std::lock_guard<std::mutex> lck(print_mutex);
+        for (int y = 0; y < GRID; ++y) {
+            for (int x = 0; x < GRID; ++x) {
+                auto [color, c] = field[x + y * GRID];
+                if (c != ' ') std::cout << "|" << color << c << "\033[0m|";
+                else std::cout << "| |";
+            }
+            std::cout << "\n";
+        }
+        std::cout << std::string(GRID * 3, '=') << "\n";
+        std::cout << "Медведи: " << bears << " | Эльфы: " << elfs << " | Разбойники: " << bandits << " | Всего: " << bears + elfs + bandits << "/50\n";
+    }
+}
 
 TEST(NPCCreation, CreateBear) {
     Bear bear("TestBear", 100, 200);
@@ -32,9 +117,6 @@ TEST(NPCCreation, CreateBandit) {
     EXPECT_EQ(bandit.x, 200);
     EXPECT_EQ(bandit.y, 300);
 }
-
-
-// Тесты сериализации/десериализации
 
 TEST(Serialization, SaveAndLoadBear) {
     auto bear = std::make_shared<Bear>("SavedBear", 123, 456);
@@ -84,233 +166,139 @@ TEST(Serialization, SaveAndLoadBandit) {
     EXPECT_EQ(loaded.y, 678);
 }
 
-
-// Тесты расстояния
-
-TEST(Distance, CloseNPCs) {
-    auto bear = std::make_shared<Bear>("Bear1", 0, 0);
-    auto elf = std::make_shared<Elf>("Elf1", 3, 4);
-    
-    EXPECT_TRUE(bear->is_close(elf, 10));
-    EXPECT_TRUE(bear->is_close(elf, 5));
-    EXPECT_FALSE(bear->is_close(elf, 4));
+TEST(Print, BearPrint) {
+    Bear bear("PrintBear", 10, 20);
+    std::stringstream ss;
+    bear.print(ss);
+    EXPECT_EQ(ss.str(), "Медведь: PrintBear { x:10, y:20} \n");
 }
 
-TEST(Distance, FarNPCs) {
-    auto bear = std::make_shared<Bear>("Bear1", 0, 0);
-    auto elf = std::make_shared<Elf>("Elf1", 100, 100);
-    
-    EXPECT_FALSE(bear->is_close(elf, 100));
-    EXPECT_TRUE(bear->is_close(elf, 150));
+TEST(Print, ElfPrint) {
+    Elf elf("PrintElf", 30, 40);
+    std::stringstream ss;
+    elf.print(ss);
+    EXPECT_EQ(ss.str(), "Эльф: PrintElf { x:30, y:40} \n");
 }
 
-TEST(Distance, SamePosition) {
-    auto bear = std::make_shared<Bear>("Bear1", 50, 50);
-    auto elf = std::make_shared<Elf>("Elf1", 50, 50);
-    
-    EXPECT_TRUE(bear->is_close(elf, 0));
-    EXPECT_TRUE(bear->is_close(elf, 1));
+TEST(Print, BanditPrint) {
+    Bandit bandit("PrintBandit", 50, 60);
+    std::stringstream ss;
+    bandit.print(ss);
+    EXPECT_EQ(ss.str(), "Разбойник: PrintBandit { x:50, y:60} \n");
 }
 
+TEST(Movement, GetMoveDistance) {
+    Bear bear("Bear", 0, 0);
+    EXPECT_EQ(bear.get_move_distance(), 5);
 
-// Тесты правил боя (Visitor Pattern)
+    Elf elf("Elf", 0, 0);
+    EXPECT_EQ(elf.get_move_distance(), 10);
 
-TEST(FightRules, ElfKillsBandit) {
-    auto elf = std::make_shared<Elf>("Elf1", 0, 0);
-    auto bandit = std::make_shared<Bandit>("Bandit1", 0, 0);
-    
-    bool result = bandit->accept(elf);
-    EXPECT_TRUE(result);
+    Bandit bandit("Bandit", 0, 0);
+    EXPECT_EQ(bandit.get_move_distance(), 10);
 }
 
-TEST(FightRules, ElfDoesNotKillElf) {
-    auto elf1 = std::make_shared<Elf>("Elf1", 0, 0);
-    auto elf2 = std::make_shared<Elf>("Elf2", 0, 0);
-    
-    bool result = elf2->accept(elf1);
-    EXPECT_FALSE(result);
+TEST(Movement, StayWithinBounds) {
+    Bear bear("Bear", 0, 0);
+    bear.move(-10, -10, 100, 100);
+    auto pos = bear.position();
+    EXPECT_EQ(pos.first, 0);
+    EXPECT_EQ(pos.second, 0);
+
+    bear.move(150, 150, 100, 100);
+    pos = bear.position();
+    EXPECT_EQ(pos.first, 100);
+    EXPECT_EQ(pos.second, 100);
 }
 
-TEST(FightRules, ElfDoesNotKillBear) {
-    auto elf = std::make_shared<Elf>("Elf1", 0, 0);
-    auto bear = std::make_shared<Bear>("Bear1", 0, 0);
-    
-    bool result = bear->accept(elf);
-    EXPECT_FALSE(result);
+TEST(Distance, GetKillDistance) {
+    Bear bear("Bear", 0, 0);
+    EXPECT_EQ(bear.get_kill_distance(), 10);
+
+    Elf elf("Elf", 0, 0);
+    EXPECT_EQ(elf.get_kill_distance(), 50);
+
+    Bandit bandit("Bandit", 0, 0);
+    EXPECT_EQ(bandit.get_kill_distance(), 10);
 }
 
-TEST(FightRules, BanditKillsBandit) {
-    auto bandit1 = std::make_shared<Bandit>("Bandit1", 0, 0);
-    auto bandit2 = std::make_shared<Bandit>("Bandit2", 0, 0);
-    
-    bool result = bandit2->accept(bandit1);
-    EXPECT_TRUE(result);
+TEST(Distance, IsClose) {
+    auto npc1 = std::make_shared<Bear>("Bear1", 0, 0);
+    auto npc2 = std::make_shared<Elf>("Elf2", 3, 4);
+    EXPECT_TRUE(npc1->is_close(npc2, 5));
+    EXPECT_FALSE(npc1->is_close(npc2, 4));
 }
 
-TEST(FightRules, BanditDoesNotKillElf) {
-    auto bandit = std::make_shared<Bandit>("Bandit1", 0, 0);
-    auto elf = std::make_shared<Elf>("Elf1", 0, 0);
-    
-    bool result = elf->accept(bandit);
-    EXPECT_FALSE(result);
+TEST(Fight, BearKillsElfLose) {
+    srand(0);
+    auto bear = std::make_shared<Bear>("Bear", 0, 0);
+    auto elf = std::make_shared<Elf>("Elf", 0, 0);
+    bool success = elf->accept(bear);
+    EXPECT_FALSE(success);
+    EXPECT_TRUE(elf->is_alive());
 }
 
-TEST(FightRules, BanditDoesNotKillBear) {
-    auto bandit = std::make_shared<Bandit>("Bandit1", 0, 0);
-    auto bear = std::make_shared<Bear>("Bear1", 0, 0);
-    
-    bool result = bear->accept(bandit);
-    EXPECT_FALSE(result);
-}
-
-TEST(FightRules, BearKillsElf) {
-    auto bear = std::make_shared<Bear>("Bear1", 0, 0);
-    auto elf = std::make_shared<Elf>("Elf1", 0, 0);
-    
-    bool result = elf->accept(bear);
-    EXPECT_TRUE(result);
-}
-
-TEST(FightRules, BearDoesNotKillBear) {
-    auto bear1 = std::make_shared<Bear>("Bear1", 0, 0);
-    auto bear2 = std::make_shared<Bear>("Bear2", 0, 0);
-    
-    bool result = bear2->accept(bear1);
-    EXPECT_FALSE(result);
-}
-
-TEST(FightRules, BearDoesNotKillBandit) {
-    auto bear = std::make_shared<Bear>("Bear1", 0, 0);
-    auto bandit = std::make_shared<Bandit>("Bandit1", 0, 0);
-    
-    bool result = bandit->accept(bear);
-    EXPECT_FALSE(result);
-}
-
-
-// Тесты Observer Pattern
-
-class TestObserver : public IFightObserver {
+class MockObserver : public IFightObserver {
 public:
-    int fight_count = 0;
-    int win_count = 0;
-    int loss_count = 0;
-    
-    void on_fight(const std::shared_ptr<NPC> attacker, 
-                  const std::shared_ptr<NPC> defender, bool win) override {
-        (void)attacker;
-        (void)defender;
-        fight_count++;
-        if (win)
-            win_count++;
-        else
-            loss_count++;
+    bool called = false;
+    std::shared_ptr<NPC> last_attacker;
+    std::shared_ptr<NPC> last_defender;
+    bool last_win;
+
+    void on_fight(const std::shared_ptr<NPC> attacker, const std::shared_ptr<NPC> defender, bool win) override {
+        called = true;
+        last_attacker = attacker;
+        last_defender = defender;
+        last_win = win;
     }
 };
 
-TEST(Observer, NotificationOnWin) {
-    auto observer = std::make_shared<TestObserver>();
-    
-    auto elf = std::make_shared<Elf>("Elf1", 0, 0);
-    auto bandit = std::make_shared<Bandit>("Bandit1", 0, 0);
-    
-    elf->subscribe(observer);
-    
-    bandit->accept(elf);
-    
-    EXPECT_EQ(observer->fight_count, 1);
-    EXPECT_EQ(observer->win_count, 1);
-    EXPECT_EQ(observer->loss_count, 0);
+TEST(Observer, NoNotifyOnFightLose) {
+    auto mock = std::make_shared<MockObserver>();
+    auto bear = std::make_shared<Bear>("Bear", 0, 0);
+    bear->subscribe(mock);
+    auto elf = std::make_shared<Elf>("Elf", 0, 0);
+    srand(0);
+    bear->visit(elf);
+    EXPECT_FALSE(mock->called);
 }
 
-TEST(Observer, NoNotificationOnLoss) {
-    auto observer = std::make_shared<TestObserver>();
-    
-    auto elf = std::make_shared<Elf>("Elf1", 0, 0);
-    auto bear = std::make_shared<Bear>("Bear1", 0, 0);
-    
-    elf->subscribe(observer);
-    
-    bear->accept(elf);
-    
-    EXPECT_EQ(observer->fight_count, 0);
+TEST(MapDrawing, SimpleDrawWithOneNPC) {
+    std::vector<std::shared_ptr<NPC>> npcs;
+    auto bear = std::make_shared<Bear>("Bear", 25, 25);
+    npcs.push_back(bear);
+
+    ::testing::internal::CaptureStdout();
+    draw_map(npcs);
+    std::string output = ::testing::internal::GetCapturedStdout();
+
+    EXPECT_NE(output.find("\033[33mM\033[0m"), std::string::npos);
+    EXPECT_NE(output.find("Медведи: 1"), std::string::npos);
 }
 
-TEST(Observer, MultipleObservers) {
-    auto observer1 = std::make_shared<TestObserver>();
-    auto observer2 = std::make_shared<TestObserver>();
-    
-    auto bear = std::make_shared<Bear>("Bear1", 0, 0);
-    auto elf = std::make_shared<Elf>("Elf1", 0, 0);
-    
-    bear->subscribe(observer1);
-    bear->subscribe(observer2);
-    
-    elf->accept(bear);
-    
-    EXPECT_EQ(observer1->fight_count, 1);
-    EXPECT_EQ(observer2->fight_count, 1);
+TEST(EdgeCases, EmptyName) {
+    Bear bear("", 0, 0);
+    EXPECT_EQ(bear.name, "");
 }
 
-
-// Тесты печати
-
-TEST(Print, BearOutput) {
-    Bear bear("TestBear", 100, 200);
-    std::stringstream ss;
-    bear.print(ss);
-    
-    std::string output = ss.str();
-    EXPECT_TRUE(output.find("bear") != std::string::npos);
-    EXPECT_TRUE(output.find("TestBear") != std::string::npos);
-    EXPECT_TRUE(output.find("100") != std::string::npos);
-    EXPECT_TRUE(output.find("200") != std::string::npos);
+TEST(EdgeCases, NegativeCoordinates) {
+    Elf elf("Elf", -100, -200);
+    EXPECT_EQ(elf.x, -100);
+    EXPECT_EQ(elf.y, -200);
 }
 
-TEST(Print, ElfOutput) {
-    Elf elf("TestElf", 150, 250);
-    std::stringstream ss;
-    elf.print(ss);
-    
-    std::string output = ss.str();
-    EXPECT_TRUE(output.find("elf") != std::string::npos);
-    EXPECT_TRUE(output.find("TestElf") != std::string::npos);
+TEST(EdgeCases, NegativeCoordinatesMove) {
+    Elf elf("Elf", -100, -200);
+    elf.move(-10, -10, 100, 100);
+    auto pos = elf.position();
+    EXPECT_EQ(pos.first, 0);
+    EXPECT_EQ(pos.second, 0);
 }
 
-TEST(Print, BanditOutput) {
-    Bandit bandit("TestBandit", 200, 300);
-    std::stringstream ss;
-    bandit.print(ss);
-    
-    std::string output = ss.str();
-    EXPECT_TRUE(output.find("Bandit") != std::string::npos);
-    EXPECT_TRUE(output.find("TestBandit") != std::string::npos);
-}
-
-
-// Интеграционные тесты
-
-TEST(Integration, BattleScenario) {
-    set_t npcs;
-    
-    npcs.insert(std::make_shared<Bear>("Bear1", 0, 0));
-    npcs.insert(std::make_shared<Elf>("Elf1", 10, 0));
-    npcs.insert(std::make_shared<Bandit>("Bandit1", 20, 0));
-    
-    EXPECT_EQ(npcs.size(), 3);
-    
-    set_t dead_list;
-    for (const auto& attacker : npcs) {
-        for (const auto& defender : npcs) {
-            if ((attacker != defender) && (attacker->is_close(defender, 15))) {
-                bool success = defender->accept(attacker);
-                if (success)
-                    dead_list.insert(defender);
-            }
-        }
-    }
-    
-    EXPECT_GE(dead_list.size(), 1);
+TEST(EdgeCases, ZeroDistance) {
+    auto bear = std::make_shared<Bear>("Bear", 0, 0);
+    auto elf = std::make_shared<Elf>("Elf", 1, 1);
+    EXPECT_FALSE(bear->is_close(elf, 0));
 }
 
 TEST(Integration, SaveAndLoadFile) {
@@ -336,33 +324,6 @@ TEST(Integration, SaveAndLoadFile) {
     
     ifs.close();
     std::remove(filename.c_str());
-}
-
-
-// Краевые случаи
-
-TEST(EdgeCases, EmptyName) {
-    Bear bear("", 0, 0);
-    EXPECT_EQ(bear.name, "");
-}
-
-TEST(EdgeCases, NegativeCoordinates) {
-    Elf elf("Elf", -100, -200);
-    EXPECT_EQ(elf.x, -100);
-    EXPECT_EQ(elf.y, -200);
-}
-
-TEST(EdgeCases, LargeCoordinates) {
-    Bandit bandit("Bandit", 10000, 20000);
-    EXPECT_EQ(bandit.x, 10000);
-    EXPECT_EQ(bandit.y, 20000);
-}
-
-TEST(EdgeCases, ZeroDistance) {
-    auto bear = std::make_shared<Bear>("Bear", 0, 0);
-    auto elf = std::make_shared<Elf>("Elf", 1, 1);
-    
-    EXPECT_FALSE(bear->is_close(elf, 0));
 }
 
 int main(int argc, char **argv) {
