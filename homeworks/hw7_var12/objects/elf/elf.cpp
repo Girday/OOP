@@ -23,8 +23,15 @@ bool Elf::visit([[maybe_unused]] std::shared_ptr<Elf> other) {
 }
 
 bool Elf::visit(std::shared_ptr<Bandit> other) { 
-    fight_notify(std::static_pointer_cast<NPC>(other), true);
-    return true; 
+    int attack = std::rand() % 6 + 1;
+    int defense = std::rand() % 6 + 1;
+
+    if (attack >= defense) {
+        fight_notify(std::static_pointer_cast<NPC>(other), true);
+        return true;
+    }
+    
+    return false; 
 }
 
 bool Elf::accept(std::shared_ptr<NPC> attacker) {
@@ -32,6 +39,6 @@ bool Elf::accept(std::shared_ptr<NPC> attacker) {
 }
 
 std::ostream& operator<<(std::ostream& os, Elf& elf) {
-    os << "elf: " << elf.name << " " << *static_cast<NPC*>(&elf) << std::endl;
+    os << "Эльф: " << elf.name << " " << *static_cast<NPC*>(&elf) << std::endl;
     return os;
 }

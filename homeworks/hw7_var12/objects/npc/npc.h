@@ -9,6 +9,7 @@
 #include <set>
 #include <cmath>
 #include <vector>
+#include <mutex>
 
 struct NPC;
 struct Bear;
@@ -33,7 +34,9 @@ struct NPC : public std::enable_shared_from_this<NPC> {
     std::string name;
     int x{0};
     int y{0};
+    bool alive{true};
     std::vector<std::shared_ptr<IFightObserver>> observers;
+    mutable std::mutex mtx;
 
     NPC(NpcType t, const std::string& n, int _x, int _y);
     NPC(NpcType t, std::istream& is);
@@ -50,6 +53,15 @@ struct NPC : public std::enable_shared_from_this<NPC> {
 
     virtual void print(std::ostream& os) = 0;
     virtual void save(std::ostream& os);
+
+    void move(int shift_x, int shift_y, int max_x, int max_y);
+    bool is_alive() const;
+    void must_die();
+    std::pair<int, int> position() const;
+    int get_move_distance() const;
+    int get_kill_distance() const;
+
+    std::string get_color() const;
 
     friend std::ostream& operator<<(std::ostream& os, NPC& npc);
 };

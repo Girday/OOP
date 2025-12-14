@@ -1,5 +1,7 @@
 #include "npc.h"
 
+using lm = std::lock_guard<std::mutex>;
+
 NPC::NPC(NpcType t, const std::string& n, int _x, int _y) : type(t), name(n), x(_x), y(_y) {}
 NPC::NPC(NpcType t, std::istream& is) : type(t) {
     is >> name >> x >> y;
@@ -22,6 +24,60 @@ bool NPC::is_close(const std::shared_ptr<NPC>& other, size_t distance) const {
 
 void NPC::save(std::ostream& os) {
     os << name << std::endl << x << std::endl << y << std::endl;
+}
+
+void NPC::move(int shift_x, int shift_y, int max_x, int max_y) {
+    lm lck(mtx);
+
+    int new_x = x + shift_x;
+    int new_y = y + shift_y;
+
+    if (new_x >= 0 && new_x <= max_x)
+        x = new_x;
+    if (new_y >= 0 && new_y <= max_y)
+        y = new_y;
+}
+
+bool NPC::is_alive() const {
+    lm lck(mtx);
+    return alive;
+}
+
+void NPC::must_die() {
+    lm lck(mtx);
+    alive = false;
+}
+
+std::pair<int, int> NPC::position() const {
+    lm lck(mtx);
+    return {x, y};
+}
+
+int NPC::get_move_distance() const {
+    switch (type) {
+        case BearType: return 5;
+        case ElfType: return 10;
+        case BanditType: return 10;    
+        default: return 0;
+    }
+}
+
+int NPC::get_kill_distance() const {
+    switch (type) {
+        case BearType: return 10;
+        case ElfType: return 50;
+        case BanditType: return 10;
+        default: return 0;
+    }
+}
+
+std::string NPC::get_color() const {
+    switch (type) {
+        case BearType: return "\033[33m";
+        case ElfType: return "\033[32m";
+        case BanditType: return "\033[31m";
+        default: return "\033[0m";
+    }
 }
 
 std::ostream& operator<<(std::ostream& os, NPC& npc) {
